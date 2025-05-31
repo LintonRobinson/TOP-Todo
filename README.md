@@ -1,6 +1,6 @@
 <div align="center">
   <br>
-  <h1>Project Name Goes Here</h1>
+  <h1>Taskly - Todo List Application</h1>
   <br>
   <div>
     <img src="https://img.shields.io/static/v1?label=&message=HTML&color=E34F26&style=for-the-badge&logo=HTML5&logoColor=white">
@@ -16,10 +16,10 @@
 
 ## 📖 Overview
 
-This is a **[Project Name]** application built as part of [The Odin Project](https://www.theodinproject.com) curriculum.
+This is a **[Todo-List]** application built as part of [The Odin Project](https://www.theodinproject.com) curriculum.
 
 Through this project, I practiced:
-- Concept 1
+- ES6 MODULES
 
 > 📘 [Assignment Instructions](#link-to-assignment)
 
