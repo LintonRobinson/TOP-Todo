@@ -37,22 +37,108 @@ button {
     text-align: inherit;       
     cursor: pointer;           
 }
+/******************************************
+/* BASE STYLES
+/*******************************************/
+* {
+    font-family: "Rubik";
+}
 
 /******************************************
 /* BASE STYLES
 /*******************************************/
 
 body {
-    
+    width: calc(100vw - 20px) ;;
+    height: calc(100vh - 20px) ;
+    padding: 20px;
+    background-color: #F5F8FA;
+    overflow: hidden;
+}
+
+body > div {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 10% 90%;
+    grid-template-columns: 20% 80%;
+    gap: 20px;
+   
 }
 
 
-/******************************************
-/* LAYOUT
-/*******************************************/
+header , main {
+    padding: 20px;
+}
+
+
 header {
+    grid-column: 1 / 3;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   
 
 }
+
+header img {
+    width: 200px;
+}
+
+header a img {
+    width: 50px;
+}
+
+aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: solid 1px #D1D1D1;
+    padding: 30px 20px 20px 20px;
+}
+
+nav {
+    width: 100%;
+}
+
+nav div {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+aside button {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    background-color: #E8E8E8;
+    padding: 10px 20px;
+    font-size: 1rem;
+
+    border-radius: 15px;
+    border: solid 1px #D1D1D1;
+}
+
+
+
+aside button:nth-child(1) {
+    background-color: #3240ff;
+    color: white;
+}
+
+aside img {
+    width: 20px;
+}
+
+
+main {
+    background-color: white;
+    border-radius: 15px;
+    border: solid 1px #D1D1D1;
+}
+
 
 footer {
 
