@@ -44,41 +44,51 @@ button {
     font-family: "Rubik";
 }
 
+a {
+    text-decoration: none;
+    color: var(--text-grey);
+}
+
+:root {
+    --text-grey: #212121;
+    --border: solid 1px #D1D1D1;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
 /******************************************
 /* BASE STYLES
 /*******************************************/
 
 body {
-    width: calc(100vw - 20px) ;;
-    height: calc(100vh - 20px) ;
-    padding: 20px;
+    width: 100%;
+    height: 100vh;
+    padding: 40px 60px;
     background-color: #F5F8FA;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 
 body > div {
+    width: 100%;
     height: 100%;
     display: grid;
-    grid-template-rows: 10% 90%;
-    grid-template-columns: 20% 80%;
+    grid-template-rows: 61px 1fr;
+    grid-template-columns: 230px 1fr;
     gap: 20px;
-   
-}
-
-
-header , main {
-    padding: 20px;
 }
 
 
 header {
     grid-column: 1 / 3;
-    
     display: flex;
     justify-content: space-between;
     align-items: center;
-   
-
 }
 
 header img {
@@ -89,25 +99,18 @@ header a img {
     width: 50px;
 }
 
+
 aside {
     display: flex;
     flex-direction: column;
     align-items: center;
     border-top: solid 1px #D1D1D1;
-    padding: 30px 20px 20px 20px;
+    padding-top: 30px;
+    position: relative;
 }
 
-nav {
-    width: 100%;
-}
 
-nav div {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-aside button {
+nav > div:nth-child(1) > button {
     width: 100%;
     display: flex;
     justify-content: start;
@@ -116,34 +119,260 @@ aside button {
     background-color: #E8E8E8;
     padding: 10px 20px;
     font-size: 1rem;
-
     border-radius: 15px;
     border: solid 1px #D1D1D1;
 }
 
+aside button img {
+    width: 20px;
+}
+
+nav {
+    width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    
+}
+
+nav > div {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.category-wrapper {
+    overflow-y: auto;
+    max-height: 350px;
+    border-bottom: solid 1px #D1D1D1;
+}
+
+.category-wrapper div {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px #D1D1D1;
+    padding-bottom: 10px;
+    font-size: 1.1;
+}
+
+.category-wrapper > div:nth-child(1) {
+    position: sticky;
+    top: 0;
+    background-color: #F5F8FA;
+}
 
 
-aside button:nth-child(1) {
+aside > div:nth-child(2) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.plus-icon {
+    width: 23px;
+    aspect-ratio: 1/1;
+}
+
+
+.github-credit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.github-credit img {
+    width: 20px;
+}
+
+#selected-button {
     background-color: #3240ff;
     color: white;
 }
 
-aside img {
-    width: 20px;
-}
 
 
 main {
+    width: calc(100%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+section {
     background-color: white;
     border-radius: 15px;
     border: solid 1px #D1D1D1;
 }
 
+.todays-tasks-wrapper:nth-child(1) {
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #e3e5ff;
+}
 
-footer {
+.todays-tasks-wrapper:nth-child(1) div {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
 
+.todays-tasks-wrapper div:nth-child(1) span:nth-child(1) {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.todays-tasks-wrapper div:nth-child(1) span:nth-child(2) {
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+
+.todays-tasks-wrapper div:nth-child(2) span {
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+
+.todays-tasks-wrapper div:nth-child(2) span span {
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+
+#taskWindow {
+   height: 85%; 
+   padding: 30px 20px 20px 20px;
+   position: relative;
+   display: flex;
+   justify-content: center;
+}
+
+.task-window-wrapper {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    
+    
+    
+}
+
+.task-window-wrapper > div:nth-child(1) {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: var(--border);
+    
+}
+
+
+
+.task-window-wrapper div:nth-child(1) img {
+    width: 50px;
+    
+}
+
+.tasks-wrapper {
+    width: 100%;
+    overflow: auto;
+    height: 50vh;
+}
+
+.tasks-wrapper > div:nth-child(1) {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 7px;
+    border-bottom: var(--border);
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+h3 , h3 span {
+    font-size: 1.1rem;
+    
+    font-weight: 600;
+}
+
+.tasks-wrapper > div:nth-child(1) img {
+    width: 25px;
+    aspect-ratio: 1 / 1;
+}
+
+.tasks-wrapper h3 span {
+    font-weight: 600; 
+}
+
+.individualTaskWrapper {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    
+    border-bottom: solid 1px #f0f0f0;
+    overflow: auto;
+}
+
+
+.individualTaskWrapper > div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+
+.individualTaskWrapper > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.individualTaskWrapper img {
+    width: 20px;
+}
+
+/* Task bubble */
+.individualTaskWrapper > div > div  {
+    width: 15px;
+    aspect-ratio: 1 / 1;
+    border: solid 2px #D1D1D1;
+    border-radius: 50%;
+}
+
+
+
+#taskWindow > button img {
+    width: 50px;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
 }
 
 /******************************************
 /* UTILITY STYLES
 /*******************************************/
+
+.button {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    background-color: #E8E8E8;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 15px;
+    border: solid 1px #D1D1D1;
+}

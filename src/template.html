@@ -16,52 +16,337 @@
     <div>
         <header>
             <img src="todo-logo.png" alt="Taskly Logo">
-            <a href="https://github.com/LintonRobinson" target="_blank">
+            <a href="https://github.com/LintonRobinson/TOP-Todo" target="_blank">
                 <img src="github-logo.png" alt="GitHub Icon">
             </a>
         </header>
         <aside>
             <nav>
                 <div>
-                    <button>
+                    <button id="selected-button">
                         <img src="task-icon-white.png" alt="White Task Icon">
                         <span>All</span>
                     </button>
                     <button>
-                        <img src="task-icon-grey.png" alt="White Task Icon">
+                        <img src="task-icon-grey.png" alt="Grey Task Icon">
                         <span>Today</span>
                     </button>
                     <button>
-                        <img src="task-icon-grey.png" alt="White Task Icon">
+                        <img src="task-icon-grey.png" alt="Grey Task Icon">
                         <span>Week</span>
                     </button>
                     <button>
-                        <img src="task-icon-grey.png" alt="White Task Icon">
+                        <img src="task-icon-grey.png" alt="Grey Task Icon">
                         <span>Important</span>
                     </button>
                     <button>
-                        <img src="task-icon-grey.png" alt="White Task Icon">
+                        <img src="task-icon-grey.png" alt="Grey Task Icon">
                         <span>Complete</span>
                     </button>
                 </div>
-                <div>
+                <div class="category-wrapper">
+                    <div>
+                        <h3>Categories <span>(1)</span></h3>
+                        <button>
+                            <img src="plus-icon.png" alt="Add Icon" class="plus-icon">
+                        </button>
+                    </div>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+
+
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+                    <button class="button">
+                        <img src="category-icon.png" alt="Grey Project Icon">
+                        <span>Personal</span>
+                    </button>
+
+
 
                 </div>
-                <div>
 
-                </div>
             </nav>
+            <div>
+                <a href="https://github.com/LintonRobinson" target="_blank" class="github-credit">
+                    <img src="github-logo.png" alt="">Linton Robinson
+                </a>
+            </div>
         </aside>
         <main>
-            <section>
-
+            <section class="todays-tasks-wrapper">
+                <div>
+                    <span>Good afternoon.</span>
+                    <span>Nice to see you back.</span>
+                </div>
+                <div>
+                    <span> You have <span>0</span> tasks due today.</span>
+                </div>
             </section>
-            <section>
+            <section id="taskWindow">
+                <div class="task-window-wrapper">
+                    <div>
+                        <img src="category-icon.png" alt="Category Icon">
+                        <h1 id="openTaskProject">All Tasks</h1>
+                    </div>
 
+                    <div class="tasks-wrapper">
+                        <div>
+                            <h3>Tasks <span>(1)</span></h3>
+                            <button>
+                                <img src="plus-icon.png" alt="Add Icon" class="plus-icon">
+                            </button>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="individualTaskWrapper">
+                            <div>
+                                <div></div>
+                                <span id>Task</span>
+                            </div>
+                            <div>
+                                <button>
+                                    <img src="view-icon.png" alt="View Icon">
+                                </button>
+                                <button>
+                                    <img src="edit-icon.png" alt="Edit Icon">
+                                </button>
+                                <button>
+                                    <img src="delete-icon.png" alt="Delete Icon">
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <button>
+                    <img src="plus-icon.png" alt="">
+                </button>
             </section>
         </main>
     </div>
-
 </body>
 
 </html>
