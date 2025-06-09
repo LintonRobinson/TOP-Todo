@@ -376,3 +376,19 @@ h3 , h3 span {
     border-radius: 15px;
     border: solid 1px #D1D1D1;
 }
+
+
+
+
+.big-black {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    position: absolute;
+}
+
+.small-white {
+    width: 50vw;
+    height: 50vh;
+    background-color: white;
+}
