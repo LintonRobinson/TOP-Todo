@@ -20,6 +20,9 @@ This is a **[Todo-List]** application built as part of [The Odin Project](https:
 
 Through this project, I practiced:
 - ES6 MODULES
+- SOLID Principles
+- Dynami
+- CRUD
 
 > 📘 [Assignment Instructions](#link-to-assignment)
 
@@ -75,8 +78,9 @@ Icons:
 
 
 ## 🧠 What I Learned
-- Brief explanation of technical concepts learned
-- Notable design or architecture decisions
+- Deconstructing with constructor functions to better set object properties
+- Utilizing built in array methods
+- Pubsub pattern
 - Reflections on debugging, tools, or performance
 
 
