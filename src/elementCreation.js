@@ -22,7 +22,14 @@ export default class Element {
 
     addChildElement(childElement) {
         this.innerText = null;
-        this.children.push(childElement);
+        if (!Array.isArray(childElement)) {
+            this.children.push(childElement);
+        } else {
+            childElement.forEach((child) => {
+                this.children.push(child);
+            })
+        }
+        
         return this
     }
     
