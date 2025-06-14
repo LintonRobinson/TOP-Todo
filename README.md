@@ -82,6 +82,7 @@ Icons:
 - Utilizing built in array methods
 - Pubsub pattern
 - Reflections on debugging, tools, or performance
+- Using SVG
 
 
 
