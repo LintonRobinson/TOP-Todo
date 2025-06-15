@@ -14,7 +14,7 @@ const taskManager = (() => {
 
         
     })
-    
+
     class Task {
         constructor({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory, taskId}) {
             this.name = taskName;
@@ -41,6 +41,7 @@ const taskManager = (() => {
     }
     
     // categoryManager.createCategory({categoryName: "Personal",categoryDescription: "My stuff"})
+        // categoryManager.setActiveCategory('90c39b47-c381-44fc-a7e6-a3c003ea4bdc')
     // taskManager.createTask({taskName: "Go to DDT",taskDescription:"Ya Mama",taskDueDate:"Now",taskImportantStatus:false,taskNotes:"Nah"})
     // taskManager.editTask("ced3988d-fee9-49bb-bc78-34174080d7fc",{taskName: "ODIN!!!!",taskDescription:"Ya Mama",taskDueDate:"Now",taskImportantStatus:false,taskNotes:"Nah"})
     // categoryManager.setActiveCategory("")

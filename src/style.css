@@ -56,6 +56,13 @@ a {
 
 h1 {
     font-size: 2.5rem;
+    color: #3240ff;
+}
+
+h2 {
+    border-bottom: #212121 solid 2px;
+    padding-bottom: 10px;
+    align-self: center;
 }
 
 /******************************************
@@ -139,7 +146,8 @@ nav {
 nav > div {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 23px;
+    padding-bottom: 23px;
 }
 
 .category-wrapper {
@@ -272,8 +280,8 @@ section {
 
 
 
-.task-window-wrapper div:nth-child(1) img {
-    width: 50px;
+.task-window-wrapper div:nth-child(1) i {
+    color: #3240ff;
     
 }
 
@@ -335,7 +343,7 @@ h3 , h3 span {
 .individualTaskWrapper > div:nth-child(2) {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
 
 .individualTaskWrapper img {
@@ -352,12 +360,145 @@ h3 , h3 span {
 
 
 
-#taskWindow > button img {
+#taskWindow > button i {
     width: 50px;
     aspect-ratio: 1 / 1;
     position: absolute;
     bottom: 20px;
-    right: 20px;
+    right: 31px;
+}
+
+#taskWindow > button i {
+    font-size: 60px;
+}
+
+
+.modal-wrapper {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #64646445;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    min-width: 600px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.901);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+    position: relative;
+
+}
+
+.fa-xmark {
+    font-size: 40px;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    top: 20px;
+    right: 22px;
+}
+
+
+
+.form-question-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="text"] {
+   
+   
+}
+
+input , textarea , select{
+    width: 60%;
+    border-radius: 15px;
+    padding: 8px;
+    border: solid #626262 1px;
+}
+
+select {
+    appearance: none;
+    padding: 0 40px 0 10px; 
+    height: 40px;            
+    line-height: 40px;        
+    background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") 
+                no-repeat 
+                right 10px 
+                center;
+  
+    background-size: 20px 20px;
+    font-size: 16px;
+}
+
+
+input:user-invalid , textarea:user-invalid  {
+    border: solid #fa3d3d 1px;
+}
+
+input:user-valid , textarea:user-valid  {
+    border: solid #4ccb63 1px;
+}
+
+input:focus , textarea:focus {
+    border: solid #3240ff 1px;
+}
+
+
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+
+}
+
+textarea {
+    resize: none;
+    height: 70px;
+}
+
+label[for="taskImportantStatus"] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-btn-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+}
+
+form button {
+        border-radius:6px;
+        border:1px solid #3c3c3c;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        padding:6px 24px;
+        text-decoration:none;
+        text-shadow:0px 1px 0px #8c8c8c;
+        width: 60%;
+}
+
+#createTask {
+    background-color: #3240ff;
+}
+
+.cancelTaskCreation {
+    background-color: #ff4646;
 }
 
 /******************************************
@@ -378,7 +519,9 @@ h3 , h3 span {
 }
 
 
-
+.fa-eye , .fa-pen-to-square , .fa-trash {
+    color: #212121;
+}
 
 .big-black {
     width: 100vw;
@@ -391,4 +534,8 @@ h3 , h3 span {
     width: 50vw;
     height: 50vh;
     background-color: white;
+}
+
+.task-window-wrapper div:nth-child(1) i {
+    font-size: 35px;
 }
