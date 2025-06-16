@@ -182,6 +182,12 @@ const UIController = (() => {
         
             
         }
+
+        const closeModal = () => {
+            const modalWindow = document.querySelector(".modal-wrapper")
+            document.querySelector("body").removeChild(modalWindow)
+        }
+
 // create category before you create a task
         const getTaskValues = () => {
             const taskName = document.querySelector("#taskName").value;
@@ -196,7 +202,7 @@ const UIController = (() => {
         }
     
         
-        return { openTaskModal , getTaskValues }
+        return { openTaskModal , getTaskValues , closeModal }
     })();
  
 
