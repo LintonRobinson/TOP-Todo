@@ -129,7 +129,7 @@ const UIController = (() => {
             
             
 
-            //
+            //categoryManager.setActiveCategory("0ce8bc09-9fb5-48bc-9dd8-af925fefd366")
             const taskDueDateWrapper = uiItems.taskModal.createTaskWrapper;
             const taskDueDateLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskDueDate"}).addInnerText("Task Due Date");
             const taskDueDateInput = uiItems.taskModal.createTaskInput.setElementAttribute({id: "taskDueDate", type: "date", required: ""});
@@ -167,7 +167,7 @@ const UIController = (() => {
                 case "create": 
                     formHeader.addInnerText("Create New Task");
                     const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", type:"submit"}).addInnerText("Create Task");
+                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", type:"button"}).addInnerText("Create Task");
                     const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "cancelTaskCreation", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
@@ -179,25 +179,24 @@ const UIController = (() => {
             document.querySelector("body").appendChild(modalWrapper.build())
             
         
-            // Dynamically add 
-
-            //categoryManager.getCategories().forEach()
+        
             
         }
 // create category before you create a task
         const getTaskValues = () => {
             const taskName = document.querySelector("#taskName").value;
+            alert(taskName)
             const taskCategory = document.querySelector("select").value;
             const taskDueDate = document.querySelector("#taskDueDate").value;
             const taskDescription = document.querySelector("#taskDescription").value;
             const taskNotes = document.querySelector("#taskNotes").value;
             const taskImportantStatus = document.querySelector("#taskImportantStatus").value;
-            return {taskName: taskName,taskDescription:taskDescription,taskDueDate:taskDueDate,taskImportantStatus:false,taskNotes:"Nah"}
+            return {taskName: taskName, taskCategory: taskCategory ,taskDescription:taskDescription,taskDueDate:taskDueDate,taskImportantStatus: taskImportantStatus,taskNotes: taskNotes}
 
         }
     
         
-        return { openTaskModal  }
+        return { openTaskModal , getTaskValues }
     })();
  
 
