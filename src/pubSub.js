@@ -1,4 +1,4 @@
-export default pubSub = (() => {
+const pubSub = (() => {
     const events = {};
     const publish = (eventName,eventData) => {
         if (events[eventName]) {
@@ -26,3 +26,6 @@ export default pubSub = (() => {
 
     return { publish , subscribe , unsubscribe }
 })();
+
+
+export default pubSub

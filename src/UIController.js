@@ -58,12 +58,9 @@ const UIController = (() => {
                 return new Element("span").addInnerText("Mark As Important");
             },
             get createCloseIcon() {
-                return new Element("i").setElementAttribute({class:"fa-solid", class: "fa-xmark", "aria-hidden": true});
+                return new Element("i").setElementAttribute({class:"fa-solid fa-xmark", "aria-hidden": true});
             }
         }
-
-        
-
     }
 
     // document.querySelector(".tasks-wrapper").appendChild(UIController.domManager.createUITaskItem(""))
@@ -94,14 +91,44 @@ const UIController = (() => {
             const taskNameInput = uiItems.taskModal.createTaskInput.setElementAttribute({id: "taskName", type: "text", required: "", placeholder: "Task Name"});
             
             // Dynamically add 
+
+            function generateSelectCategories() {
+                
+                const taskCategoriesSelect = uiItems.taskModal.createSelectGroup.setElementAttribute({name:"categories", id:"taskCategories"});
+                // categoryManager.setActiveCategory("allTasks")
+                if (categoryManager.getActiveCategory() === "allTasks") {
+                    const taskOptionCategories = []
+                    categoryManager.getCategories().forEach((category) => {
+                        taskOptionCategories.push({categoryId: category.id, categoryName: category.name})
+                    })
+                    
+                    taskOptionCategories.forEach((optionObject) => {
+                        const taskCategory = uiItems.taskModal.createSelectOption.setElementAttribute({value: optionObject.categoryId}).addInnerText(optionObject.categoryName);
+                        taskCategoriesSelect.addChildElement(taskCategory);
+                    })
+                } else {
+                    const taskCategory = uiItems.taskModal.createSelectOption.setElementAttribute({value: categoryManager.getActiveCategory()}).addInnerText(categoryManager.getCategoryName(categoryManager.getActiveCategory()));
+                    taskCategoriesSelect.addChildElement(taskCategory);
+                };
+
+                // Last step
+                taskCategoryWrapper.addChildElement([taskCategoryLabel,taskCategoriesSelect]);
+            }
+
             const taskCategoryWrapper = uiItems.taskModal.createTaskWrapper; 
             const taskCategoryLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskCategory"}).addInnerText("Task Category");
+
+            generateSelectCategories()
+        
             
-            //categoryManager.getCategories().forEach()
             
-            const taskCategoriesSelect = uiItems.taskModal.createSelectGroup.setElementAttribute({name:"categories", id:"taskCategories"});
-            const taskCategory = uiItems.taskModal.createSelectOption.setElementAttribute({value: "Personal"}).addInnerText("Personal");
+
+
+
+
             
+            
+
             //
             const taskDueDateWrapper = uiItems.taskModal.createTaskWrapper;
             const taskDueDateLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskDueDate"}).addInnerText("Task Due Date");
@@ -113,7 +140,7 @@ const UIController = (() => {
             
             const taskNotesWrapper = uiItems.taskModal.createTaskWrapper;
             const taskNotesLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskNotes"}).addInnerText("Task Notes");
-            const taskNotesTextArea = uiItems.taskModal.createTaskTextArea.setElementAttribute({id: "taskNotes", required: ""})
+            const taskNotesTextArea = uiItems.taskModal.createTaskTextArea.setElementAttribute({id: "taskNotes", required: "",placeholder: "Task Notes"})
             
             const taskImportantStatusWrapper = uiItems.taskModal.createTaskWrapper;
             const taskImportantStatusLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskImportantStatus"});
@@ -130,8 +157,6 @@ const UIController = (() => {
 
         // Add children (sub children first)
             taskNameWrapper.addChildElement([taskNameLabel,taskNameInput]);
-            taskCategoriesSelect.addChildElement(taskCategory);
-            taskCategoryWrapper.addChildElement([taskCategoryLabel,taskCategoriesSelect]);
             taskDueDateWrapper.addChildElement([taskDueDateLabel,taskDueDateInput]);
             taskDescriptionWrapper.addChildElement([taskDescriptionLabel,taskDescriptionTextArea]);
             taskNotesWrapper.addChildElement([taskNotesLabel,taskNotesTextArea]);
@@ -147,32 +172,29 @@ const UIController = (() => {
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
                     break;
-
-
             }
 
 
             modalWrapper.addChildElement(modalForm)
             document.querySelector("body").appendChild(modalWrapper.build())
             
-            
-            
         
             // Dynamically add 
-            
+
             //categoryManager.getCategories().forEach()
-            
-            
-        
-
-
-
-
-            
             
         }
 // create category before you create a task
-    
+        const getTaskValues = () => {
+            const taskName = document.querySelector("#taskName").value;
+            const taskCategory = document.querySelector("select").value;
+            const taskDueDate = document.querySelector("#taskDueDate").value;
+            const taskDescription = document.querySelector("#taskDescription").value;
+            const taskNotes = document.querySelector("#taskNotes").value;
+            const taskImportantStatus = document.querySelector("#taskImportantStatus").value;
+            return {taskName: taskName,taskDescription:taskDescription,taskDueDate:taskDueDate,taskImportantStatus:false,taskNotes:"Nah"}
+
+        }
     
         
         return { openTaskModal  }

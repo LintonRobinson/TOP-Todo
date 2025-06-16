@@ -2,16 +2,15 @@ import taskManager from "./taskManager.js"
 const categoryManager = (() => {
     let activeCategory
     let categories = [];
+    // Update Storage
     document.addEventListener("DOMContentLoaded", () => {
         if (!localStorage.getItem("categories")) {
             const categories = [];
             localStorage.setItem("categories",JSON.stringify(categories))
         } else {
             categories = JSON.parse(localStorage.getItem("categories"))
-            console.log(categories)
+            // console.log(categories)
         }
-
-        
     })
 
 
@@ -42,10 +41,15 @@ const categoryManager = (() => {
     const getCategory = (categoryId) => {
         return categories[getIndexByID(categoryId)];
     }
+
+    const getCategoryName = (categoryId) => {
+        return categories[getIndexByID(categoryId)].name;
+    }
     
     const getIndexByID = (categoryId) => {
         return categories.findIndex((category) => category.id === categoryId);
     }
+    
     
 
     const createCategory = ({categoryName , categoryDescription, categoryId}) => {
@@ -77,7 +81,7 @@ const categoryManager = (() => {
         localStorage.setItem("categories",JSON.stringify(categories));
     }
 
-    return { createCategory , getCategory , editCategory , deleteCategoryandTasks , getActiveCategory, setActiveCategory , getCategories }
+    return { createCategory , getCategory , getCategoryName , editCategory , deleteCategoryandTasks , getActiveCategory, setActiveCategory , getCategories }
 })();
 
 

@@ -9,7 +9,7 @@ const taskManager = (() => {
             localStorage.setItem("tasks",JSON.stringify(tasks))
         } else {
             tasks = JSON.parse(localStorage.getItem("tasks"))
-            console.log(tasks)
+            // console.log(tasks)
         }
 
         
@@ -46,8 +46,8 @@ const taskManager = (() => {
     // taskManager.editTask("ced3988d-fee9-49bb-bc78-34174080d7fc",{taskName: "ODIN!!!!",taskDescription:"Ya Mama",taskDueDate:"Now",taskImportantStatus:false,taskNotes:"Nah"})
     // categoryManager.setActiveCategory("")
     //categoryManager.deleteCategoryandTasks("")
-    const createTask = ({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskId}) => {       
-        const newTask = new Task({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory: categoryManager.getActiveCategory()}, taskId)
+    const createTask = ({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskId,taskCategory}) => {       
+        const newTask = new Task({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory, taskId});
         tasks.push(newTask)
         saveToLocalStorage()
         return newTask
@@ -58,8 +58,7 @@ const taskManager = (() => {
         const taskCategory = tasks[currentTaskIndex].category;
         tasks[currentTaskIndex] = new Task(updatedTask);
         tasks[currentTaskIndex].id = taskId;
-        tasks[currentTaskIndex].category = taskCategory;
-        
+        tasks[currentTaskIndex].category = taskCategory;     
         saveToLocalStorage()
     }
 
