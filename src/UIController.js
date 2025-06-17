@@ -5,20 +5,28 @@ import categoryManager from "./categoryManager.js";
 const UIController = (() => { 
     const uiItems = {
         
-        /* taskItem: {
+        taskItem: {
             get getIndividualTaskWrapper() {
-                return new Element("div").setElementAttribute({class: "individualTaskWrapper"}).addChildElement["divOne","divTwo"].build()
+                return new Element("div").setElementAttribute({class: "individualTaskWrapper"})
             }, 
-            
-            get getInnerWrapperLeft() {
-                return new Element("div").addChildElement["divThree","spanOne"].build()
-            },
 
-            taskCircle: "Right",
-            taskName: new Element("div").setElementAttribute({class: "taskName"}).build(),
-            innerWrapperRight: "Right"
+            get createDiv() {
+                return new Element("div")
+            },
+            get createSpan() {
+                return new Element("span")
+            }, 
+            get createViewIcon() {
+                return new Element("i").setElementAttribute({class:"fa-regular fa-eye viewTask", "aria-hidden": true})
+            }, 
+            get createEditIcon() {
+                return new Element("i").setElementAttribute({class:"fa-solid fa-pen-to-square editTask", "aria-hidden": true})
+            },
+            get createDeleteIcon() {
+                return new Element("i").setElementAttribute({class:"fa-regular fa-trash deleteTask", "aria-hidden": true})
+            }, 
         }, 
-        */
+        
 
         taskModal: {
             get createDiv() {
@@ -58,7 +66,7 @@ const UIController = (() => {
                 return new Element("span").addInnerText("Mark As Important");
             },
             get createCloseIcon() {
-                return new Element("i").setElementAttribute({class:"fa-solid fa-xmark", "aria-hidden": true});
+                return new Element("i").setElementAttribute({class:"fa-solid fa-xmark closeModal ", "aria-hidden": true});
             }
         }
     }
@@ -68,12 +76,38 @@ const UIController = (() => {
     
     const domManager = (() => {
         
-        const openUITaskItem = (taskId) => {
+        
+        
+        
+        // UIController.domManager.buildUITaskItem(taskManager.getTask("5e5e7ee2-0922-400f-bb09-fc0c0b8ce03f"))
+        
+        
+        const buildUITaskItem = (task) => {
             const tasksWrapper = document.querySelector(".tasks-wrapper")
-            const newTask = uiItems.taskItem.individualTaskWrapper;
-            newTask.dataset.id = taskId;
-            tasksWrapper.appendChild(newTask);
+            
+            const newTaskWrapper = uiItems.taskItem.getIndividualTaskWrapper;
+            
+            const taskWrapperLeft = uiItems.taskItem.createDiv;
+            const taskWrapperRight = uiItems.taskItem.createDiv;
+            
+            const taskDot = uiItems.taskItem.createDiv;
+            const taskName = uiItems.taskItem.createSpan;
+            const viewTaskIcon = uiItems.taskItem.createViewIcon;
+            const editTaskIcon = uiItems.taskItem.createEditIcon;
+            const deleteTaskIcon = uiItems.taskItem.createDeleteIcon;
+            
+            console.log(newTaskWrapper)
+            taskName.addInnerText(task.name)
+            taskWrapperLeft.addChildElement([taskDot,taskName])
+            taskWrapperRight.addChildElement([viewTaskIcon,editTaskIcon,deleteTaskIcon])
+            newTaskWrapper.addChildElement([taskWrapperLeft,taskWrapperRight])
+            
+            tasksWrapper.appendChild(newTaskWrapper.build());
+
         } 
+
+
+
         
         //
 
@@ -167,8 +201,8 @@ const UIController = (() => {
                 case "create": 
                     formHeader.addInnerText("Create New Task");
                     const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", type:"button"}).addInnerText("Create Task");
-                    const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "cancelTaskCreation", type:"button"}).addInnerText("Cancel");
+                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", class: "closeModal", type:"button"}).addInnerText("Create Task");
+                    const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "cancelTaskCreation closeModal", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
                     break;
@@ -182,7 +216,7 @@ const UIController = (() => {
         
             
         }
-
+        
         const closeModal = () => {
             const modalWindow = document.querySelector(".modal-wrapper")
             document.querySelector("body").removeChild(modalWindow)
@@ -200,9 +234,11 @@ const UIController = (() => {
             return {taskName: taskName, taskCategory: taskCategory ,taskDescription:taskDescription,taskDueDate:taskDueDate,taskImportantStatus: taskImportantStatus,taskNotes: taskNotes}
 
         }
+
+        
     
         
-        return { openTaskModal , getTaskValues , closeModal }
+        return { openTaskModal , getTaskValues  , closeModal , buildUITaskItem }
     })();
  
 

@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     eventListenerController.addDefaultEventListeners();
     pubsub.subscribe("openCreateTaskModule", UIController.domManager.openTaskModal);
     pubsub.subscribe("submitNewTask", taskManager.createTask);
-    pubsub.subscribe("submitNewTask", UIController.domManager.closeModal );
+    pubsub.subscribe("closeModal", UIController.domManager.closeModal );
+
 
 
 });
