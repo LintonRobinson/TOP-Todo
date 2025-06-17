@@ -98,6 +98,10 @@ const UIController = (() => {
             
             console.log(newTaskWrapper)
             taskName.addInnerText(task.name)
+            viewTaskIcon.setElementAttribute({"data-task-id": task.id})
+            editTaskIcon.setElementAttribute({"data-task-id": task.id})
+            deleteTaskIcon.setElementAttribute({"data-task-id": task.id})
+
             taskWrapperLeft.addChildElement([taskDot,taskName])
             taskWrapperRight.addChildElement([viewTaskIcon,editTaskIcon,deleteTaskIcon])
             newTaskWrapper.addChildElement([taskWrapperLeft,taskWrapperRight])
@@ -111,7 +115,7 @@ const UIController = (() => {
         
         //
 
-        const openTaskModal = (modalType /*,{taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskId}*/) => {
+        const openTaskModal = (modalType, taskObject = {}) => {
         // Initialize
             // Modal Wrapper
             const modalWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "modal-wrapper"});
@@ -206,8 +210,21 @@ const UIController = (() => {
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
                     break;
-            }
+                case "view":
+                    formHeader.addInnerText(taskObject.name);
+                    taskNameInput.setElementAttribute({value: taskObject.name});
+                    taskDueDateInput.setElementAttribute({value: taskObject.dueDate});
 
+                    modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,closeIcon])
+                    taskNameInput.setElementAttribute({disabled: ""})
+                    taskDueDateInput.setElementAttribute({disabled: ""})
+                    taskDescriptionTextArea.setElementAttribute({disabled: ""})
+                    taskNotesTextArea.setElementAttribute({disabled: ""})
+                    taskImportantStatusInput.setElementAttribute({disabled: ""})
+
+            }
+            
+            // UIController.domManager.buildUITaskItem(taskManager.getTask("5e5e7ee2-0922-400f-bb09-fc0c0b8ce03f"))
 
             modalWrapper.addChildElement(modalForm)
             document.querySelector("body").appendChild(modalWrapper.build())
@@ -225,7 +242,6 @@ const UIController = (() => {
 // create category before you create a task
         const getTaskValues = () => {
             const taskName = document.querySelector("#taskName").value;
-            alert(taskName)
             const taskCategory = document.querySelector("select").value;
             const taskDueDate = document.querySelector("#taskDueDate").value;
             const taskDescription = document.querySelector("#taskDescription").value;

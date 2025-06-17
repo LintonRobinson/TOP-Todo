@@ -1,11 +1,15 @@
 const pubSub = (() => {
     const events = {};
-    const publish = (eventName,eventData) => {
+    const publish = (eventName, ...eventData) => {
         if (events[eventName]) {
             events[eventName].forEach(callback => {
-                callback(eventData);
+                callback(...eventData);
             });
         }
+    }
+
+    const getEvents = () => {
+        return events
     }
 
     const subscribe = (eventName,callback) => {
@@ -24,7 +28,7 @@ const pubSub = (() => {
         }
     }
 
-    return { publish , subscribe , unsubscribe }
+    return { publish , subscribe , unsubscribe , getEvents }
 })();
 
 
