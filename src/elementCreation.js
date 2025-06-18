@@ -62,7 +62,3 @@ export default class Element {
         return createdAndAppendedElement
     }
 }
-
-// document.querySelector("body").appendChild(new Element("div").setElementAttribute({class: "small-white"}).addInnerText("Ya Mama").build())
-
-// document.querySelector("body").appendChild(UIController.elements.individualTaskWrapper)

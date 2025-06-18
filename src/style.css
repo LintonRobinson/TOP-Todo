@@ -493,13 +493,15 @@ form button {
         width: 60%;
 }
 
-#createTask {
+#createTask , #editTask {
     background-color: #3240ff;
 }
 
-.cancelTaskCreation {
+button.closeModal {
     background-color: #ff4646;
 }
+
+
 
 /******************************************
 /* UTILITY STYLES

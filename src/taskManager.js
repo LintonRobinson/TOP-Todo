@@ -39,6 +39,8 @@ const taskManager = (() => {
     const getIndexByID = (taskId) => {
         return tasks.findIndex((task) => task.id === taskId);
     }
+
+
     
     // categoryManager.createCategory({categoryName: "Personal",categoryDescription: "My stuff"})
         // categoryManager.setActiveCategory('90c39b47-c381-44fc-a7e6-a3c003ea4bdc')
@@ -53,12 +55,11 @@ const taskManager = (() => {
         return newTask
     }
         
-    const editTask = (taskId,updatedTask) => {
-        const currentTaskIndex = getIndexByID(taskId)
-        const taskCategory = tasks[currentTaskIndex].category;
+    const editTask = ({taskId,updatedTask}) => {
+        const currentTaskIndex = getIndexByID(taskId)    
         tasks[currentTaskIndex] = new Task(updatedTask);
         tasks[currentTaskIndex].id = taskId;
-        tasks[currentTaskIndex].category = taskCategory;     
+        tasks[currentTaskIndex].category = updatedTask.taskCategory;     
         saveToLocalStorage()
     }
 
@@ -84,13 +85,19 @@ const taskManager = (() => {
         return categoryTasks
     };
 
+    const getTaskCategory = (taskId) => {
+        const task = tasks.find((task) => task.id = taskId)
+        const categoryId = task.category
+        return categoryId
+    }
+
     // 💭Test! new method
 
     const saveToLocalStorage = () => {
         localStorage.setItem("tasks",JSON.stringify(tasks));
     }
 
-    return { getTasks, getTask , getTasksByCategory , createTask , editTask , deleteTask , deleteTasksByCategory }
+    return { getTasks, getTask , getTaskCategory , getTasksByCategory , createTask , editTask , deleteTask , deleteTasksByCategory }
 })();
 
 

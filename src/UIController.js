@@ -1,15 +1,14 @@
 import { id } from "date-fns/locale";
 import Element from "./elementCreation.js"
 import categoryManager from "./categoryManager.js";
+import taskManager from "./taskManager.js";
 
 const UIController = (() => { 
-    const uiItems = {
-        
+    const uiItems = {  
         taskItem: {
             get getIndividualTaskWrapper() {
                 return new Element("div").setElementAttribute({class: "individualTaskWrapper"})
             }, 
-
             get createDiv() {
                 return new Element("div")
             },
@@ -20,7 +19,7 @@ const UIController = (() => {
                 return new Element("i").setElementAttribute({class:"fa-regular fa-eye viewTask", "aria-hidden": true})
             }, 
             get createEditIcon() {
-                return new Element("i").setElementAttribute({class:"fa-solid fa-pen-to-square editTask", "aria-hidden": true})
+                return new Element("i").setElementAttribute({class:"fa-solid fa-pen-to-square openEditTaskModal", "aria-hidden": true})
             },
             get createDeleteIcon() {
                 return new Element("i").setElementAttribute({class:"fa-regular fa-trash deleteTask", "aria-hidden": true})
@@ -81,7 +80,6 @@ const UIController = (() => {
         
         // UIController.domManager.buildUITaskItem(taskManager.getTask("5e5e7ee2-0922-400f-bb09-fc0c0b8ce03f"))
         
-        
         const buildUITaskItem = (task) => {
             const tasksWrapper = document.querySelector(".tasks-wrapper")
             
@@ -96,7 +94,6 @@ const UIController = (() => {
             const editTaskIcon = uiItems.taskItem.createEditIcon;
             const deleteTaskIcon = uiItems.taskItem.createDeleteIcon;
             
-            console.log(newTaskWrapper)
             taskName.addInnerText(task.name)
             viewTaskIcon.setElementAttribute({"data-task-id": task.id})
             editTaskIcon.setElementAttribute({"data-task-id": task.id})
@@ -104,8 +101,7 @@ const UIController = (() => {
 
             taskWrapperLeft.addChildElement([taskDot,taskName])
             taskWrapperRight.addChildElement([viewTaskIcon,editTaskIcon,deleteTaskIcon])
-            newTaskWrapper.addChildElement([taskWrapperLeft,taskWrapperRight])
-            
+            newTaskWrapper.addChildElement([taskWrapperLeft,taskWrapperRight])  
             tasksWrapper.appendChild(newTaskWrapper.build());
 
         } 
@@ -115,7 +111,7 @@ const UIController = (() => {
         
         //
 
-        const openTaskModal = (modalType, taskObject = {}) => {
+        const openTaskModal = ({modalType, taskObject, currentTaskId }) => {
         // Initialize
             // Modal Wrapper
             const modalWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "modal-wrapper"});
@@ -133,12 +129,13 @@ const UIController = (() => {
             function generateSelectCategories() {
                 
                 const taskCategoriesSelect = uiItems.taskModal.createSelectGroup.setElementAttribute({name:"categories", id:"taskCategories"});
-                // categoryManager.setActiveCategory("allTasks")
                 if (categoryManager.getActiveCategory() === "allTasks") {
                     const taskOptionCategories = []
                     categoryManager.getCategories().forEach((category) => {
                         taskOptionCategories.push({categoryId: category.id, categoryName: category.name})
                     })
+
+                    
                     
                     taskOptionCategories.forEach((optionObject) => {
                         const taskCategory = uiItems.taskModal.createSelectOption.setElementAttribute({value: optionObject.categoryId}).addInnerText(optionObject.categoryName);
@@ -149,9 +146,13 @@ const UIController = (() => {
                     taskCategoriesSelect.addChildElement(taskCategory);
                 };
 
+                if (modalType === "view") taskCategoriesSelect.setElementAttribute({disabled: ""});
+                
+
                 // Last step
                 taskCategoryWrapper.addChildElement([taskCategoryLabel,taskCategoriesSelect]);
             }
+
 
             const taskCategoryWrapper = uiItems.taskModal.createTaskWrapper; 
             const taskCategoryLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskCategory"}).addInnerText("Task Category");
@@ -168,6 +169,7 @@ const UIController = (() => {
             
 
             //categoryManager.setActiveCategory("0ce8bc09-9fb5-48bc-9dd8-af925fefd366")
+            
             const taskDueDateWrapper = uiItems.taskModal.createTaskWrapper;
             const taskDueDateLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskDueDate"}).addInnerText("Task Due Date");
             const taskDueDateInput = uiItems.taskModal.createTaskInput.setElementAttribute({id: "taskDueDate", type: "date", required: ""});
@@ -202,18 +204,23 @@ const UIController = (() => {
             taskImportantStatusWrapper.addChildElement([taskImportantStatusLabel]);
             //
             switch(modalType) {
-                case "create": 
+                case "create": {
                     formHeader.addInnerText("Create New Task");
                     const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
                     const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", class: "closeModal", type:"button"}).addInnerText("Create Task");
-                    const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "cancelTaskCreation closeModal", type:"button"}).addInnerText("Cancel");
+                    const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
                     break;
-                case "view":
+                }
+                case "view": {  
                     formHeader.addInnerText(taskObject.name);
                     taskNameInput.setElementAttribute({value: taskObject.name});
                     taskDueDateInput.setElementAttribute({value: taskObject.dueDate});
+                    taskDescriptionTextArea.setElementAttribute({value: taskObject.description});
+                    taskNotesTextArea.setElementAttribute({value: taskObject.notes});
+                    taskImportantStatusInput.setElementAttribute({value: taskObject.importantStatus});
+
 
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,closeIcon])
                     taskNameInput.setElementAttribute({disabled: ""})
@@ -221,16 +228,43 @@ const UIController = (() => {
                     taskDescriptionTextArea.setElementAttribute({disabled: ""})
                     taskNotesTextArea.setElementAttribute({disabled: ""})
                     taskImportantStatusInput.setElementAttribute({disabled: ""})
+                    break
+                }
+                case "edit": {
+                        formHeader.addInnerText(taskObject.name);
+                        taskNameInput.setElementAttribute({value: taskObject.name});
+                        taskDueDateInput.setElementAttribute({value: taskObject.dueDate});
+                        
+                        taskDescriptionTextArea.setElementAttribute({value: taskObject.description});
+                        taskNotesTextArea.setElementAttribute({value: taskObject.notes});
+                        
+                        taskImportantStatusInput.setElementAttribute({value: taskObject.importantStatus});
+                        const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
+                        const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "editTask", class: "closeModal", type:"button", "data-task-id": currentTaskId}).addInnerText("Edit Task");
+                        const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal", type:"button"}).addInnerText("Cancel");
+                        formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
+                        modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
+                        // on eventlistenersjs run publish and pass the clicked object and edit task
+                        break
+                }
 
             }
             
             // UIController.domManager.buildUITaskItem(taskManager.getTask("5e5e7ee2-0922-400f-bb09-fc0c0b8ce03f"))
 
             modalWrapper.addChildElement(modalForm)
-            document.querySelector("body").appendChild(modalWrapper.build())
+            const modalWrapperElement = modalWrapper.build()
             
-        
-        
+            
+            document.querySelector("body").appendChild(modalWrapperElement)
+            console.log(`Modal Type is ${modalType}`)
+            if (modalType === "edit" || modalType === "view") document.querySelector("select").value = taskManager.getTaskCategory(currentTaskId);
+            
+            if (modalType === "edit" || modalType === "view") {
+                document.querySelector("#taskDescription").value = taskObject.description;
+                document.querySelector("#taskNotes").value = taskObject.notes;
+            }
+
             
         }
         
@@ -241,18 +275,18 @@ const UIController = (() => {
 
 // create category before you create a task
         const getTaskValues = () => {
-            const taskName = document.querySelector("#taskName").value;
+            const taskName = document.querySelector("#taskName").value; 
             const taskCategory = document.querySelector("select").value;
             const taskDueDate = document.querySelector("#taskDueDate").value;
             const taskDescription = document.querySelector("#taskDescription").value;
             const taskNotes = document.querySelector("#taskNotes").value;
             const taskImportantStatus = document.querySelector("#taskImportantStatus").value;
-            return {taskName: taskName, taskCategory: taskCategory ,taskDescription:taskDescription,taskDueDate:taskDueDate,taskImportantStatus: taskImportantStatus,taskNotes: taskNotes}
+            return { taskName: taskName , taskCategory: taskCategory , taskDescription: taskDescription, taskDueDate:taskDueDate, taskImportantStatus: taskImportantStatus, taskNotes: taskNotes }
 
         }
 
         
-    
+        
         
         return { openTaskModal , getTaskValues  , closeModal , buildUITaskItem }
     })();

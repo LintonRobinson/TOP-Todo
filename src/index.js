@@ -17,11 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
     eventListenerController.addDefaultEventListeners();
     pubsub.subscribe("openCreateTaskModule", UIController.domManager.openTaskModal);
     pubsub.subscribe("submitNewTask", taskManager.createTask);
+    pubsub.subscribe("editTask", taskManager.editTask);
     pubsub.subscribe("closeModal", UIController.domManager.closeModal );
-
-
-
+    UIController.domManager.buildUITaskItem(taskManager.getTask("5e5e7ee2-0922-400f-bb09-fc0c0b8ce03f"))
 });
 
-// const yaMamasProject = categoryManager.createCategory("Ya Mama") 
-//window.yaMamasProject = yaMamasProject;

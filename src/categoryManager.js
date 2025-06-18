@@ -1,6 +1,6 @@
 import taskManager from "./taskManager.js"
 const categoryManager = (() => {
-    let activeCategory = "0ce8bc09-9fb5-48bc-9dd8-af925fefd366"
+    let activeCategory = "allTasks"
     let categories = [];
     // Update Storage
     document.addEventListener("DOMContentLoaded", () => {
