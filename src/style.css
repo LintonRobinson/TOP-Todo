@@ -156,7 +156,7 @@ nav > div {
     border-bottom: solid 1px #D1D1D1;
 }
 
-.category-wrapper div {
+.category-wrapper > div:nth-child(1) {
     display: flex;
     justify-content: space-between;
     border-bottom: solid 1px #D1D1D1;
@@ -269,12 +269,13 @@ section {
     
 }
 
-.task-window-wrapper > div:nth-child(1) {
+.task-window-wrapper > div:nth-child(1) > div{
     display: flex;
     gap: 20px;
     align-items: center;
     padding-bottom: 10px;
     border-bottom: var(--border);
+    margin-bottom: 20px;
     
 }
 
@@ -282,7 +283,9 @@ section {
 
 .task-window-wrapper div:nth-child(1) i {
     color: #3240ff;
-    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .tasks-wrapper {
@@ -381,6 +384,14 @@ h3 , h3 span {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.delete {
+    padding: 80px 80px 70px 80px ;
+}
+
+.cancelDelete {
+    background-color: #959595 !important;
 }
 
 form {
@@ -501,6 +512,9 @@ button.closeModal {
     background-color: #ff4646;
 }
 
+.errorMessage {
+    color: red;
+}
 
 
 /******************************************

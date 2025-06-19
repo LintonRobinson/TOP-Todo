@@ -1,4 +1,9 @@
 import  categoryManager  from "./categoryManager.js"
+import { isThisWeek } from "date-fns";
+import { isToday } from "date-fns";
+import { isFuture } from "date-fns";
+import { parse } from "date-fns";
+import pubSub from "./pubsub.js";
 
 
 const taskManager = (() => {
@@ -49,10 +54,17 @@ const taskManager = (() => {
     // categoryManager.setActiveCategory("")
     //categoryManager.deleteCategoryandTasks("")
     const createTask = ({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskId,taskCategory}) => {       
-        const newTask = new Task({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory, taskId});
-        tasks.push(newTask)
-        saveToLocalStorage()
-        return newTask
+        if (isFuture(parse(taskDueDate, "yyyy-MM-dd", new Date()))) {
+            const newTask = new Task({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory, taskId});
+            tasks.push(newTask)
+            pubSub.publish("closeModal");
+            saveToLocalStorage()
+            
+        } else {
+            pubSub.publish("invalidDate");
+            
+        }
+        
     }
         
     const editTask = ({taskId,updatedTask}) => {
