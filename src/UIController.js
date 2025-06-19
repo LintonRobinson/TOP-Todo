@@ -263,6 +263,7 @@ const UIController = (() => {
             if (modalType === "edit" || modalType === "view") {
                 document.querySelector("#taskDescription").value = taskObject.description;
                 document.querySelector("#taskNotes").value = taskObject.notes;
+                if (taskObject.importantStatus) document.querySelector("#taskImportantStatus").checked = true;
             }
 
             
@@ -280,7 +281,7 @@ const UIController = (() => {
             const taskDueDate = document.querySelector("#taskDueDate").value;
             const taskDescription = document.querySelector("#taskDescription").value;
             const taskNotes = document.querySelector("#taskNotes").value;
-            const taskImportantStatus = document.querySelector("#taskImportantStatus").value;
+            const taskImportantStatus = document.querySelector("#taskImportantStatus").checked;
             return { taskName: taskName , taskCategory: taskCategory , taskDescription: taskDescription, taskDueDate:taskDueDate, taskImportantStatus: taskImportantStatus, taskNotes: taskNotes }
 
         }
