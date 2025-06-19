@@ -21,8 +21,10 @@ This is a **[Todo-List]** application built as part of [The Odin Project](https:
 Through this project, I practiced:
 - ES6 MODULES
 - SOLID Principles
-- Dynami
-- CRUD
+- Dynamiclly rendering elements
+- CRUD operations
+- Object destructuring
+- Loose coupling (Pub sub pattern)
 
 > 📘 [Assignment Instructions](#link-to-assignment)
 
@@ -82,7 +84,10 @@ Icons:
 - Utilizing built in array methods
 - Pubsub pattern
 - Reflections on debugging, tools, or performance
-- Using SVG
+- Using SVG images
+- Object deconstruction
+- Using npm packages, like date fns
+- Spread operator, rest operator
 
 
 
