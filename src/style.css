@@ -123,7 +123,6 @@ nav > div:nth-child(1) > button {
     justify-content: start;
     align-items: center;
     gap: 10px;
-    background-color: #E8E8E8;
     padding: 10px 20px;
     font-size: 1rem;
     border-radius: 15px;
@@ -190,6 +189,15 @@ aside > div:nth-child(2) {
     aspect-ratio: 1/1;
 }
 
+.sidebarBtn {
+    background-color: #E8E8E8;
+    color: #212121;
+}
+
+.sidebarBtn.active {
+    background-color: #3240ff;
+    color: white;
+}
 
 .github-credit {
     display: flex;
@@ -547,7 +555,7 @@ button#deleteTask , .cancelBtn {
 }
 
 
-.fa-eye , .fa-pen-to-square , .fa-trash {
+.task-window-wrapper .fa-eye ,.task-window-wrapper .fa-pen-to-square , .task-window-wrapper .fa-trash {
     color: #212121;
 }
 

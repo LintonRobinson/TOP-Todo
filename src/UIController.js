@@ -271,9 +271,19 @@ const UIController = (() => {
         }
 
         
+        const dynamicallySelectButton = () => {
+            const sidebar = document.querySelector("aside");
+            const sidebarBtns = sidebar.querySelectorAll(".sidebarBtn");
+            sidebarBtns.forEach((button) => {
+                button.addEventListener('click',() => {
+                    sidebarBtns.forEach((btn) => btn.classList.remove("active"))
+                    button.classList.add("active")
+                });
+            })
+            // identify by buttons in aside
+        }
         
-        
-        return { openTaskModal , getTaskValues  , closeModal , buildUITaskItem , displayDateError}
+        return { openTaskModal , getTaskValues  , closeModal , buildUITaskItem , displayDateError , dynamicallySelectButton}
     })();
  
 

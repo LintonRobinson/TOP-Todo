@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pubSub.subscribe("deleteTask", taskManager.deleteTask);
     pubSub.subscribe("closeModal", UIController.domManager.closeModal );
     pubSub.subscribe("invalidDate", UIController.domManager.displayDateError );
+    UIController.domManager.dynamicallySelectButton()
     
     UIController.domManager.buildUITaskItem(taskManager.getTask("ed8be9dc-04f4-4746-830f-11dbadda9532"))
 });
