@@ -1,5 +1,4 @@
-import  categoryManager  from "./categoryManager.js"
-import pubSub from "./pubsub.js";
+import { isToday, parse } from "date-fns";
 
 
 const taskManager = (() => {
@@ -87,13 +86,15 @@ const taskManager = (() => {
         return categoryTasks
     };
 
-    const getTasksDueTodayCategory = () => {
+    const getTasksDueToday = () => {
         const tasksDueToday = [];
         tasks.forEach((task) => {
-            if (task.category === categoryId) categoryTasks.push(task)
-
+            if (isToday(parse(task.dueDate,"yyyy-MM-dd",new Date()))) {
+                console.log(task.dueDate)
+                tasksDueToday.push(task)
+            }
         }) 
-        return categoryTasks
+        return tasksDueToday
     };
 
     const getTaskCategory = (taskId) => {
@@ -102,13 +103,12 @@ const taskManager = (() => {
         return categoryId
     }
 
-    // 💭Test! new method
 
     const saveToLocalStorage = () => {
         localStorage.setItem("tasks",JSON.stringify(tasks));
     }
 
-    return { getTasks, getTask , getTaskCategory , getTasksByCategory , createTask , editTask , deleteTask , deleteTasksByCategory }
+    return { getTasks, getTask , getTaskCategory , getTasksByCategory , getTasksDueToday, createTask , editTask , deleteTask , deleteTasksByCategory }
 })();
 
 
