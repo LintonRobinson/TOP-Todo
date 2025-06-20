@@ -1,4 +1,5 @@
 import { isToday, parse } from "date-fns";
+import { isThisWeek } from "date-fns";
 
 
 const taskManager = (() => {
@@ -97,6 +98,17 @@ const taskManager = (() => {
         return tasksDueToday
     };
 
+    const getTasksDueThisWeek = () => {
+        const tasksDueToday = [];
+        tasks.forEach((task) => {
+            if (isThisWeek(parse(task.dueDate,"yyyy-MM-dd",new Date()))) {
+                console.log(task.dueDate)
+                tasksDueToday.push(task)
+            }
+        }) 
+        return tasksDueToday
+    };
+
     const getTaskCategory = (taskId) => {
         const task = tasks.find((task) => task.id = taskId)
         const categoryId = task.category
@@ -108,7 +120,7 @@ const taskManager = (() => {
         localStorage.setItem("tasks",JSON.stringify(tasks));
     }
 
-    return { getTasks, getTask , getTaskCategory , getTasksByCategory , getTasksDueToday, createTask , editTask , deleteTask , deleteTasksByCategory }
+    return { getTasks, getTask , getTaskCategory , getTasksByCategory , getTasksDueToday , getTasksDueThisWeek , createTask , editTask , deleteTask , deleteTasksByCategory }
 })();
 
 
