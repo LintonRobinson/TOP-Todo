@@ -1,6 +1,8 @@
 import Element from "./elementCreation.js"
 import categoryManager from "./categoryManager.js";
 import taskManager from "./taskManager.js";
+import { format } from "date-fns";
+
 
 const UIController = (() => { 
     const uiItems = {  
@@ -139,7 +141,7 @@ const UIController = (() => {
             
             const taskDueDateWrapper = uiItems.taskModal.createTaskWrapper;
             const taskDueDateLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskDueDate"}).addInnerText("Task Due Date");
-            const taskDueDateInput = uiItems.taskModal.createTaskInput.setElementAttribute({id: "taskDueDate", type: "date", required: ""});
+            const taskDueDateInput = uiItems.taskModal.createTaskInput.setElementAttribute({id: "taskDueDate", type: "date", required: "",  min: format(new Date(), "yyyy-MM-dd")});
             
             const taskDescriptionWrapper = uiItems.taskModal.createTaskWrapper;
             const taskDescriptionLabel = uiItems.taskModal.createTaskLabel.setElementAttribute({for: "taskDescription"}).addInnerText("Task Description");
@@ -171,7 +173,7 @@ const UIController = (() => {
                 case "create": {
                     formHeader.addInnerText("Create New Task");
                     const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", class: "closeModal", type:"button"}).addInnerText("Create Task");
+                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", class: "closeModal", type:"submit"}).addInnerText("Create Task");
                     const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
@@ -224,6 +226,8 @@ const UIController = (() => {
             const modalWrapperElement = modalWrapper.build()
             document.querySelector("body").appendChild(modalWrapperElement)
         
+            if (modalType === "edit" || modalType === "view")
+
             // Update select after its creation
             if (modalType === "edit" || modalType === "view") document.querySelector("select").value = taskManager.getTaskCategory(currentTaskId);
             // Update textarea(s) after its creation
@@ -256,10 +260,8 @@ const UIController = (() => {
         }
 
         const displayDateError = () => {
-            
             const taskForm = document.querySelector("form");
             if (taskForm.querySelector("p")) taskForm.removeChild(taskForm.querySelector("p"))
-            
             const errorMessage = document.createElement("p");
             errorMessage.setAttribute("class", "errorMessage")
             errorMessage.textContent = "Invalid task due date. Choose a future date";
