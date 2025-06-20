@@ -3,18 +3,7 @@ import { isThisWeek } from "date-fns";
 
 
 const taskManager = (() => {
-    let tasks = [];
-    document.addEventListener("DOMContentLoaded", () => {
-        if (!localStorage.getItem("tasks")) {
-            const tasks = [];
-            localStorage.setItem("tasks",JSON.stringify(tasks))
-        } else {
-            tasks = JSON.parse(localStorage.getItem("tasks"))
-            // console.log(tasks)
-        }
-
-        
-    })
+    let tasks
 
     class Task {
         constructor({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory, taskId}) {
@@ -32,6 +21,11 @@ const taskManager = (() => {
     const getTasks = () => {
         return tasks;
     }
+
+    const setTasks = (taskToSet) => {
+        tasks = taskToSet
+    }
+
 
     const getTask = (taskId) => {
         return tasks[getIndexByID(taskId)];
@@ -120,7 +114,7 @@ const taskManager = (() => {
         localStorage.setItem("tasks",JSON.stringify(tasks));
     }
 
-    return { getTasks, getTask , getTaskCategory , getTasksByCategory , getTasksDueToday , getTasksDueThisWeek , createTask , editTask , deleteTask , deleteTasksByCategory }
+    return { getTasks, setTasks , getTask , getTaskCategory , getTasksByCategory , getTasksDueToday , getTasksDueThisWeek , createTask , editTask , deleteTask , deleteTasksByCategory }
 })();
 
 

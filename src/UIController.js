@@ -173,9 +173,9 @@ const UIController = (() => {
                 case "create": {
                     formHeader.addInnerText("Create New Task");
                     const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", class: "closeModal", type:"submit"}).addInnerText("Create Task");
-                    const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal", type:"button"}).addInnerText("Cancel");
-                    formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
+                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "createTask", type:"submit"}).addInnerText("Create Task");
+                    const cancelBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal cancelBtn", type:"button"}).addInnerText("Cancel");
+                    formButtonWrapper.addChildElement([formSubmitBtn,cancelBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
                     break;
                 }
@@ -196,6 +196,7 @@ const UIController = (() => {
                 }
 
                 case "edit": {
+
                     formHeader.addInnerText(taskObject.name);
                     taskNameInput.setElementAttribute({value: taskObject.name});
                     taskDueDateInput.setElementAttribute({value: taskObject.dueDate});
@@ -203,9 +204,9 @@ const UIController = (() => {
                     taskNotesTextArea.setElementAttribute({value: taskObject.notes});
                     taskImportantStatusInput.setElementAttribute({value: taskObject.importantStatus});
                     const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "editTask", class: "closeModal", type:"button", "data-task-id": currentTaskId}).addInnerText("Edit Task");
-                    const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal", type:"button"}).addInnerText("Cancel");
-                    formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
+                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "editTask", type:"submit", "data-task-id": currentTaskId}).addInnerText("Edit Task");
+                    const cancelBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal cancelBtn", type:"button"}).addInnerText("Cancel");
+                    formButtonWrapper.addChildElement([formSubmitBtn,cancelBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
                     break
                 
@@ -213,7 +214,7 @@ const UIController = (() => {
                 case "delete": {
                     formHeader.addInnerText("Warning: This will delete the task permanently.");
                     const formButtonWrapper = uiItems.taskModal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "deleteTask", class: "closeModal", type:"button", "data-task-id": currentTaskId}).addInnerText("Delete Task");
+                    const formSubmitBtn = uiItems.taskModal.createButton.setElementAttribute({id: "deleteTask", type:"button", "data-task-id": currentTaskId}).addInnerText("Delete Task");
                     const cancelTaskCreationBtn = uiItems.taskModal.createButton.setElementAttribute({class: "closeModal cancelDelete", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,formButtonWrapper,closeIcon]);
@@ -243,6 +244,7 @@ const UIController = (() => {
         }
         
         const closeModal = () => {
+            
             const modalWindow = document.querySelector(".modal-wrapper")
             document.querySelector("body").removeChild(modalWindow)
         }

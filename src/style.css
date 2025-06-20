@@ -170,6 +170,14 @@ nav > div {
     background-color: #F5F8FA;
 }
 
+.category-wrapper button {
+    justify-content: space-between;
+}
+
+.category-wrapper button div {
+    display: flex;
+    gap: 10px;
+}
 
 aside > div:nth-child(2) {
     position: absolute;
@@ -508,8 +516,12 @@ form button {
     background-color: #3240ff;
 }
 
-button.closeModal {
+button#deleteTask , .cancelBtn {
     background-color: #ff4646;
+}
+
+.cancelDelete {
+    background-color: #b0b0b0;
 }
 
 .errorMessage {
