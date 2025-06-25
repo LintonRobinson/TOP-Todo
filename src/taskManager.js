@@ -4,6 +4,7 @@ import { isThisWeek } from "date-fns";
 
 const taskManager = (() => {
     let tasks
+    let completeTasks
 
     class Task {
         constructor({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory, taskId}) {
@@ -22,10 +23,14 @@ const taskManager = (() => {
         return tasks;
     }
 
-    const setTasks = (taskToSet) => {
-        tasks = taskToSet
+    const setTasks = (tasksToSet) => {
+        tasks = tasksToSet
     }
 
+
+    const setCompleteTasks = (tasksToSet) => {
+        completeTasks = tasksToSet
+    }
 
     const getTask = (taskId) => {
         return tasks[getIndexByID(taskId)];
@@ -110,11 +115,20 @@ const taskManager = (() => {
     }
 
 
-    const saveToLocalStorage = () => {
-        localStorage.setItem("tasks",JSON.stringify(tasks));
+    const moveTaskToComplete = (taskId, taskName) => {
+        completeTasks.push({taskId, taskName});
+        deleteTask(taskId);
+        saveToLocalStorage();
     }
 
-    return { getTasks, setTasks , getTask , getTaskCategory , getTasksByCategory , getTasksDueToday , getTasksDueThisWeek , createTask , editTask , deleteTask , deleteTasksByCategory }
+    const saveToLocalStorage = () => {
+        localStorage.setItem("tasks",JSON.stringify(tasks));
+        localStorage.setItem("completeTasks",JSON.stringify(completeTasks));
+    }
+
+
+
+    return { getTasks, setTasks , setCompleteTasks , getTask , getTaskCategory , getTasksByCategory , getTasksDueToday , getTasksDueThisWeek , createTask , editTask , deleteTask , deleteTasksByCategory , moveTaskToComplete}
 })();
 
 

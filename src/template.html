@@ -48,9 +48,8 @@
                 <div class="category-wrapper">
                     <div>
                         <h3>Categories <span>(1)</span></h3>
-                        <button>
-                            <img src="plus-icon.png" alt="Add Icon" class="plus-icon">
-                        </button>
+                        <img id="openCreateCategory" src="plus-icon.png" alt="Add Icon" class="plus-icon">
+
                     </div>
                     <button class="sidebarBtn button">
                         <div>
@@ -58,8 +57,10 @@
                             <span>Personal</span>
                         </div>
                         <div>
-                            <i class="fa-solid fa-pencil"></i>
-                            <i class="fa-solid fa-trash deleteCategory"></i>
+                            <i class="fa-solid fa-pencil openEditCategoryModal"
+                                data-category-id="2c933e4c-894f-4372-8777-aecab7db445f"></i>
+                            <i class="fa-solid fa-trash openDeleteCategoryModal"
+                                data-category-id="2c933e4c-894f-4372-8777-aecab7db445f"></i>
                         </div>
                     </button>
 

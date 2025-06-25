@@ -209,10 +209,7 @@ aside > div:nth-child(2) {
     width: 20px;
 }
 
-#selected-button {
-    background-color: #3240ff;
-    color: white;
-}
+
 
 
 
@@ -342,6 +339,7 @@ h3 , h3 span {
     width: 100%;
     height: 50px;
     display: flex;
+    position: relative;
     gap: 20px;
     justify-content: space-between;
     align-items: center;
@@ -520,11 +518,11 @@ form button {
         width: 60%;
 }
 
-#createTask , #editTask {
+#createTask , #editTask , #createCategory , #editCategory {
     background-color: #3240ff;
 }
 
-button#deleteTask , .cancelBtn {
+button#deleteTask, button#deleteCategory , .cancelBtn {
     background-color: #ff4646;
 }
 
@@ -534,6 +532,15 @@ button#deleteTask , .cancelBtn {
 
 .errorMessage {
     color: red;
+}
+
+.complete::after {
+    content: " ";
+    position: absolute;
+    border-bottom: #3240ff55 solid 2px;
+    width: 100%;
+    height: 2px;
+    top: 22px;
 }
 
 

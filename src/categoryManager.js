@@ -1,16 +1,10 @@
 import taskManager from "./taskManager.js"
 const categoryManager = (() => {
     let activeCategory = "allTasks"
-    let categories = [];
+    let categories 
     // Update Storage
     document.addEventListener("DOMContentLoaded", () => {
-        if (!localStorage.getItem("categories")) {
-            const categories = [];
-            localStorage.setItem("categories",JSON.stringify(categories))
-        } else {
-            categories = JSON.parse(localStorage.getItem("categories"))
-            // console.log(categories)
-        }
+        
     })
 
 
@@ -42,6 +36,10 @@ const categoryManager = (() => {
         return categories[getIndexByID(categoryId)];
     }
 
+    const setCategories = (categoriesToSet) => {
+        categories = categoriesToSet
+    }
+
     const getCategoryName = (categoryId) => {
         return categories[getIndexByID(categoryId)].name;
     }
@@ -56,13 +54,13 @@ const categoryManager = (() => {
         const newCategory = new Category({categoryName , categoryDescription , categoryId});
         categories.push(newCategory);
         saveToLocalStorage()
-        return newCategory;
     }
 
     
 
-    const editCategory = (categoryId,updatedCategory) => {
+    const editCategory = ({categoryId,updatedCategory}) => {
         const currentCategoryIndex = getIndexByID(categoryId)
+        console.log(currentCategoryIndex)
         categories[currentCategoryIndex] = new Category(updatedCategory);
         categories[currentCategoryIndex].id = categoryId;
         saveToLocalStorage()
@@ -81,7 +79,7 @@ const categoryManager = (() => {
         localStorage.setItem("categories",JSON.stringify(categories));
     }
 
-    return { createCategory , getCategory , getCategoryName , editCategory , deleteCategoryandTasks , getActiveCategory, setActiveCategory , getCategories }
+    return { createCategory , getCategory , setCategories , getCategoryName , editCategory , deleteCategoryandTasks , getActiveCategory, setActiveCategory , getCategories }
 })();
 
 
