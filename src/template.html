@@ -24,7 +24,7 @@
         <aside>
             <nav>
                 <div>
-                    <button class="sidebarBtn">
+                    <button class="sidebarBtn active">
                         <i class="fa-solid fa-list-check"></i>
                         <span>All</span>
                     </button>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="category-wrapper">
                     <div>
-                        <h3>Categories <span>(1)</span></h3>
+                        <h3>Categories <span>(0)</span></h3>
                         <img id="openCreateCategory" src="plus-icon.png" alt="Add Icon" class="plus-icon">
 
                     </div>
@@ -93,19 +93,28 @@
                     <div>
                         <div>
                             <i class="fa-solid fa-layer-group"></i>
-                            <h1 id="openTaskProject">All Tasks</h1>
+                            <h1 id="categoryTitle">All Tasks</h1>
                         </div>
-                        <p>Category Description Goes Here</p>
+                        <p id="categorySummary">View every task you’ve created, no matter the category or status.</p>
                     </div>
 
                     <div class="tasks-wrapper">
                         <div>
-                            <h3>Tasks <span>(1)</span></h3>
+                            <h3>Tasks <span>(0)</span></h3>
                             <button>
                                 <img src="plus-icon.png" alt="Add Icon" class="plus-icon openCreateTask">
                             </button>
                         </div>
-                        <div class="individualTaskWrapper">
+
+                    </div>
+                </div>
+                <button type="button">
+                    <i class="fa-solid fa-circle-plus openCreateTask" style="color: #3240ff;"></i>
+                </button>
+            </section>
+        </main>
+    </div>
+    <!-- <div class="individualTaskWrapper">
                             <div>
                                 <div></div>
                                 <span>Task</span>
@@ -121,15 +130,7 @@
                                     <i class="fa-regular fa-trash deleteTask"></i>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <button type="button">
-                    <i class="fa-solid fa-circle-plus openCreateTask" style="color: #3240ff;"></i>
-                </button>
-            </section>
-        </main>
-    </div>
+    </div> -->
     <!-- <div class="modal-wrapper">
         <form action="#">
             <h2>Create New Task</h2>

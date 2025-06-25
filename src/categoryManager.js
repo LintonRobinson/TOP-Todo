@@ -4,8 +4,24 @@ const categoryManager = (() => {
     let categories 
     let defaultCategories = [
         {
-            categoryName: "All Tasks",
-            categoryDescription: "This is where all of your tasks will live.",
+            categoryName: "All",
+            categoryDescription: "View every task you’ve created, no matter the category or status.",
+        },
+        {
+            categoryName: "Today",
+            categoryDescription: "Tasks due today — perfect for staying focused and on track.",
+        },
+        {
+            categoryName: "Week",
+            categoryDescription: "All tasks scheduled for this week — stay on top of what’s ahead.",
+        },
+        {
+            categoryName: "Important",
+            categoryDescription: "High-priority tasks that need your attention first.",
+        },
+        {
+            categoryName: "Complete",
+            categoryDescription: "A list of tasks you’ve checked off — celebrate your progress!",
         },
     ]
     // Update Storage

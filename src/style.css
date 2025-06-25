@@ -65,6 +65,12 @@ h2 {
     align-self: center;
 }
 
+p {
+    text-align: center;
+    padding: 0 15px;
+
+}
+
 /******************************************
 /* BASE STYLES
 /*******************************************/
@@ -199,6 +205,7 @@ aside > div:nth-child(2) {
     color: white;
 }
 
+
 .github-credit {
     display: flex;
     align-items: center;
@@ -285,6 +292,7 @@ section {
 .task-window-wrapper > div:nth-child(1) > div{
     display: flex;
     gap: 20px;
+    justify-content: center;
     align-items: center;
     padding-bottom: 10px;
     border-bottom: var(--border);

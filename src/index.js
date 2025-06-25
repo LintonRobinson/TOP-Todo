@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // console.log(categories)
     }
 
-
-
     eventListenerController.addDefaultEventListeners();
     pubSub.subscribe("openTaskModule", UIController.domManager.openTaskModal);
     pubSub.subscribe("openCategoryModule", UIController.domManager.openCategoryModal); 
@@ -44,11 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
     pubSub.subscribe("completeTask", taskManager.moveTaskToComplete);
     pubSub.subscribe("deleteTask", taskManager.deleteTask);
     pubSub.subscribe("deleteCategory", categoryManager.deleteCategoryandTasks);
-    pubSub.subscribe("closeModal", UIController.domManager.closeModal );
-    pubSub.subscribe("invalidDate", UIController.domManager.displayDateError );
-    UIController.domManager.dynamicallySelectButton()
+    pubSub.subscribe("closeModal", UIController.domManager.closeModal);
+    pubSub.subscribe("invalidDate", UIController.domManager.displayDateError);
+    UIController.domManager.dynamicallySelectButton() // run again for each category addition
     
-    UIController.domManager.buildUITaskItem(taskManager.getTask("a9fa148b-684d-4e42-a4ce-71a0cf92b388"))
+    // UIController.domManager.buildUITaskItem(taskManager.getTask("a9fa148b-684d-4e42-a4ce-71a0cf92b388"))
 });
 
 window.categoryManager = categoryManager;

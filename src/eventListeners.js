@@ -26,7 +26,7 @@ const eventListenerController = (() => {
             
             }
             if (event.target.id === "completeTask") {
-                const taskName = document.querySelector('#taskName');
+                const taskName = document.querySelector('#taskName').value;
                 pubsub.publish("completeTask", {taskId: event.target.dataset.categoryId, taskName: taskName});
                 pubsub.publish("closeModal");
             } 
