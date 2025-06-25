@@ -184,7 +184,7 @@ const UIController = (() => {
                     taskNotesTextArea.setElementAttribute({value: taskObject.notes});
                     taskImportantStatusInput.setElementAttribute({value: taskObject.importantStatus});
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formCompleteTaskBtn = uiItems.modal.createButton.setElementAttribute({id: "createTask", type:"submit"}).addInnerText("Complete Task");
+                    const formCompleteTaskBtn = uiItems.modal.createButton.setElementAttribute({id: "completeTask", type:"button","data-task-id": currentTaskId}).addInnerText("Complete Task");
                     const cancelBtn = uiItems.modal.createButton.setElementAttribute({class: "closeModal cancelBtn", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formCompleteTaskBtn,cancelBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon])
@@ -366,6 +366,10 @@ const UIController = (() => {
                 });
             })
             // identify by buttons in aside
+        }
+
+        const renderDefaultCategory = (defaultCategory) => {
+            
         }
         
         return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , buildUITaskItem , displayDateError , dynamicallySelectButton }

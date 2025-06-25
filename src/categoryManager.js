@@ -2,6 +2,12 @@ import taskManager from "./taskManager.js"
 const categoryManager = (() => {
     let activeCategory = "allTasks"
     let categories 
+    let defaultCategories = [
+        {
+            categoryName: "All Tasks",
+            categoryDescription: "This is where all of your tasks will live.",
+        },
+    ]
     // Update Storage
     document.addEventListener("DOMContentLoaded", () => {
         
@@ -72,6 +78,8 @@ const categoryManager = (() => {
         taskManager.deleteTasksByCategory(categoryId)
         saveToLocalStorage()
     }
+
+    
  
 
 

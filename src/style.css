@@ -518,7 +518,7 @@ form button {
         width: 60%;
 }
 
-#createTask , #editTask , #createCategory , #editCategory {
+#createTask , #editTask , #completeTask , #createCategory , #editCategory {
     background-color: #3240ff;
 }
 

@@ -115,8 +115,8 @@ const taskManager = (() => {
     }
 
 
-    const moveTaskToComplete = (taskId, taskName) => {
-        completeTasks.push({taskId, taskName});
+    const moveTaskToComplete = ({taskId, taskName}) => {
+        completeTasks.push(taskName);
         deleteTask(taskId);
         saveToLocalStorage();
     }

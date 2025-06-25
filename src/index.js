@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pubSub.subscribe("submitNewCategory", categoryManager.createCategory);
     pubSub.subscribe("editTask", taskManager.editTask);
     pubSub.subscribe("editCategory", categoryManager.editCategory);
+    pubSub.subscribe("completeTask", taskManager.moveTaskToComplete);
     pubSub.subscribe("deleteTask", taskManager.deleteTask);
     pubSub.subscribe("deleteCategory", categoryManager.deleteCategoryandTasks);
     pubSub.subscribe("closeModal", UIController.domManager.closeModal );
