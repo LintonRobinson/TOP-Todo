@@ -24,34 +24,34 @@
         <aside>
             <nav>
                 <div>
-                    <button class="sidebarBtn active">
+                    <button class="allTasks defaultCategory sidebarBtn active">
                         <i class="fa-solid fa-list-check"></i>
                         <span>All</span>
                     </button>
-                    <button class="sidebarBtn">
+                    <button class="todayTasks defaultCategory sidebarBtn">
                         <i class="fa-solid fa-list-check"></i>
                         <span>Today</span>
                     </button>
-                    <button class="sidebarBtn">
+                    <button class="weekTasks defaultCategory sidebarBtn">
                         <i class="fa-solid fa-list-check"></i>
                         <span>Week</span>
                     </button>
-                    <button class="sidebarBtn">
+                    <button class="importantTasks defaultCategory sidebarBtn">
                         <i class="fa-solid fa-list-check"></i>
                         <span>Important</span>
                     </button class="sidebarBtn">
-                    <button class="sidebarBtn">
+                    <button class="completeTasks defaultCategory sidebarBtn">
                         <i class="fa-solid fa-list-check"></i>
                         <span>Complete</span>
                     </button>
                 </div>
                 <div class="category-wrapper">
                     <div>
-                        <h3>Categories <span>(0)</span></h3>
+                        <h3>Categories <span id="numberOfCategories">(1)</span></h3>
                         <img id="openCreateCategory" src="plus-icon.png" alt="Add Icon" class="plus-icon">
 
                     </div>
-                    <button class="sidebarBtn button">
+                    <!-- <button class="sidebarBtn button">
                         <div>
                             <i class="fa-solid fa-layer-group"></i>
                             <span>Personal</span>
@@ -62,7 +62,7 @@
                             <i class="fa-solid fa-trash openDeleteCategoryModal"
                                 data-category-id="2c933e4c-894f-4372-8777-aecab7db445f"></i>
                         </div>
-                    </button>
+                    </button> -->
 
 
 
@@ -100,7 +100,7 @@
 
                     <div class="tasks-wrapper">
                         <div>
-                            <h3>Tasks <span>(0)</span></h3>
+                            <h3>Tasks <span id="numberOfTasks">(0)</span></h3>
                             <button>
                                 <img src="plus-icon.png" alt="Add Icon" class="plus-icon openCreateTask">
                             </button>

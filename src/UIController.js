@@ -40,7 +40,7 @@ const UIController = (() => {
                 return new Element("span").setElementAttribute({class: 'btnCategoryName'})
             }, 
             get createCategoryIcon() {
-                return new Element("i").setElementAttribute({class:"fa-solid fa-layer-groupview", "aria-hidden": true})
+                return new Element("i").setElementAttribute({class:"fa-solid fa-layer-group", "aria-hidden": true})  
             }, 
             get createEditIcon() {
                 return new Element("i").setElementAttribute({class:"fa-solid fa-pencil openEditCategoryModal", "aria-hidden": true})
@@ -98,21 +98,17 @@ const UIController = (() => {
     const domManager = (() => {
         
         const buildCategoryButton = (category) => {
-            const categoriesWrapper = document.querySelector(".category-wrapper");
-                    
+            const categoriesWrapper = document.querySelector(".category-wrapper");                
                     const newCategoryBtn = uiItems.categoryItem.getButton.setElementAttribute({"data-category-id": category.id}); 
-              
                     const categoryWrapperLeft = uiItems.categoryItem.createDiv;
                     const categoryWrapperRight = uiItems.categoryItem.createDiv;
-                    
-
                     const categoryName = uiItems.categoryItem.createSpan.addInnerText(category.name);
 
                     const categoryIcon = uiItems.categoryItem.createCategoryIcon;
                     const editCategoryIcon = uiItems.categoryItem.createEditIcon;
                     const deleteCategoryIcon = uiItems.categoryItem.createDeleteIcon;
                     
-                    
+            
                     editCategoryIcon.setElementAttribute({"data-category-id": category.id})
                     deleteCategoryIcon.setElementAttribute({"data-category-id": category.id})
         
@@ -121,7 +117,7 @@ const UIController = (() => {
                     newCategoryBtn.addChildElement([categoryWrapperLeft,categoryWrapperRight])  
                     categoriesWrapper.appendChild(newCategoryBtn.build());
         }
-        
+
         const buildUITaskItem = (task) => {
             const tasksWrapper = document.querySelector(".tasks-wrapper")
             
@@ -435,6 +431,13 @@ const UIController = (() => {
             })
         }
         // UIController.domManager.renderDefaultCategory('all')
+        const renderCategoryButtons = () => {
+            categoryManager.getCategories().forEach((category) => {
+                buildCategoryButton(category)
+            })
+        }
+        
+        
         const renderDefaultCategory = (defaultCategory) => {
             switch (defaultCategory) {
                 case 'all': {
@@ -443,6 +446,7 @@ const UIController = (() => {
                     taskManager.getTasks().forEach((task) => {
                         buildUITaskItem(task)
                     });
+                    document.querySelector('#numberOfTasks').textContent = `(${taskManager.getTasks().length})`
                     break
                 }
                 case 'today': {
@@ -488,8 +492,18 @@ const UIController = (() => {
                 } 
             })
         }
+
+
+        const clearTaskItems = () => {
+            const tasksWrapper = document.querySelector('.tasks-wrapper') 
+            const individualTaskWrapper = document.querySelectorAll('.individualTaskWrapper') 
+            
+            individualTaskWrapper.forEach((taskItem) => {
+                tasksWrapper.removeChild(taskItem);
+            });
+        }
         
-        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory}
+        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems ,  buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons}
     })();
  
 

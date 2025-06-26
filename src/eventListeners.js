@@ -38,7 +38,13 @@ const eventListenerController = (() => {
             
             if (event.target.classList.contains("closeModal") && event.target.matches("i")) pubsub.publish("closeModal");
             if (event.target.matches(".closeModal") && event.target.matches("button")) pubsub.publish("closeModal");
+            if (event.target.matches(".defaultCategory")) {
+                if (event.target.matches(".allTasks")) pubsub.publish("renderDefaultCategory","all");
+
+            } 
+            // renderDefaultCategory
         })
+
 
         document.addEventListener("submit", (event) => {
             event.preventDefault()

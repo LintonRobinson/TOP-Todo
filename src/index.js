@@ -44,6 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     pubSub.subscribe("deleteCategory", categoryManager.deleteCategoryandTasks);
     pubSub.subscribe("closeModal", UIController.domManager.closeModal);
     pubSub.subscribe("invalidDate", UIController.domManager.displayDateError);
+    pubSub.subscribe("renderCategoryButtons", UIController.domManager.renderCategoryButtons);
+    pubSub.subscribe("renderDefaultCategory", UIController.domManager.renderDefaultCategory);
+    pubSub.subscribe("renderUserCategory", UIController.domManager.renderUserCategory);
+
     UIController.domManager.dynamicallySelectButton() // run again for each category addition
     
     // UIController.domManager.buildUITaskItem(taskManager.getTask("a9fa148b-684d-4e42-a4ce-71a0cf92b388"))
