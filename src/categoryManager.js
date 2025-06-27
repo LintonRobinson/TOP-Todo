@@ -1,7 +1,8 @@
 import taskManager from "./taskManager.js"
 const categoryManager = (() => {
     let activeCategory = "allTasks"
-    let categories 
+    let categories
+
     let defaultCategories = [
         {
             categoryName: "All",
@@ -102,6 +103,8 @@ const categoryManager = (() => {
     const saveToLocalStorage = () => {
         localStorage.setItem("categories",JSON.stringify(categories));
     }
+
+    
 
     return { createCategory , getCategory , setCategories , getCategoryName , editCategory , deleteCategoryandTasks , getActiveCategory, setActiveCategory , getCategories }
 })();

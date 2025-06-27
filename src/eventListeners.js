@@ -40,7 +40,6 @@ const eventListenerController = (() => {
         })
     }
     const addDefaultEventListeners = () => {
-        console.log('added');
         document.addEventListener("click", (event) => {
             
             if (event.target.classList.contains("openCreateTask")) pubsub.publish("openTaskModule", {modalType:"create"});

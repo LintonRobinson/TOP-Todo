@@ -49,15 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("categories")) {
         const categories = [];
         localStorage.setItem("categories",JSON.stringify(categories))
+        categoryManager.setCategories([])
+        categoryManager.createCategory({ categoryName: 'Personal', categoryDescription: 'Your personal tasks.'})
         pubSub.publish("renderCategoryButtons");
-        pubSub.publish("renderWelcomeWindow");
+        //pubSub.publish("renderWelcomeWindow");
 
 
     } else {
         categoryManager.setCategories(JSON.parse(localStorage.getItem("categories")))
         pubSub.publish("renderCategoryButtons");
         pubSub.publish("renderWelcomeWindow");
-        
+
 
 
     }
