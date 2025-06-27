@@ -40,14 +40,14 @@
                         <i class="fa-solid fa-list-check"></i>
                         <span>Important</span>
                     </button class="sidebarBtn">
-                    <button class="completeTasks defaultCategory sidebarBtn">
+                    <button class=" completeTasks defaultCategory sidebarBtn">
                         <i class="fa-solid fa-list-check"></i>
                         <span>Complete</span>
                     </button>
                 </div>
                 <div class="category-wrapper">
                     <div>
-                        <h3>Categories <span id="numberOfCategories">(1)</span></h3>
+                        <h3>Categories <span id="numberOfCategories"></span></h3>
                         <img id="openCreateCategory" src="plus-icon.png" alt="Add Icon" class="plus-icon">
 
                     </div>
@@ -81,11 +81,11 @@
         <main>
             <section class="todays-tasks-wrapper">
                 <div>
-                    <span>Good afternoon.</span>
+                    <span id="greetingMessage">Good morning!</span>
                     <span>Nice to see you back.</span>
                 </div>
                 <div>
-                    <span> You have <span>0</span> tasks due today.</span>
+                    <span> You have <span id="numberOfTodaysTasks">0 tasks due today.</span></span>
                 </div>
             </section>
             <section id="taskWindow">

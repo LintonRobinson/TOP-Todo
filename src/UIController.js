@@ -1,12 +1,30 @@
 import Element from "./elementCreation.js"
 import categoryManager from "./categoryManager.js";
 import taskManager from "./taskManager.js";
+import pubSub from "./pubsub.js";
 import { format } from "date-fns";
 import { parse } from "date-fns";
 import { isAfter } from "date-fns";
+import { getHours } from "date-fns";
+import { getMinutes } from "date-fns";
 
 
+// INstead of on load, subscribe to rendering and the trigger is the loading of local storage
 const UIController = (() => { 
+    
+    const renderWelcomeWindow = (() => {
+        const greetingMessage = document.querySelector('#greetingMessage');
+        const numberOfTodaysTasks = document.querySelector('#numberOfTodaysTasks');
+        taskManager.getTasksDueToday().length === 1 ? numberOfTodaysTasks.textContent = `(${taskManager.getTasksDueToday().length}) task due today.`: `(${taskManager.getTasksDueToday().length}) tasks due today.`;
+        
+        if (getHours(new Date()) >= 12 && getMinutes(new Date()) > 0) {
+            greetingMessage.textContent = 'Good evening.';
+        } else {
+            greetingMessage.textContent = 'Good morning.'
+        }
+
+    })
+    
     const uiItems = {  
         taskItem: {
             get getIndividualTaskWrapper() {
@@ -257,7 +275,7 @@ const UIController = (() => {
                     taskNotesTextArea.setElementAttribute({disabled: ""})
                     taskImportantStatusInput.setElementAttribute({disabled: ""})
                     break
-                }``
+                }
 
                 case "edit": {
 
@@ -420,22 +438,43 @@ const UIController = (() => {
         }
 
         
-        const dynamicallySelectButton = () => {
+        /* const dynamicallySelectButton = () => {
             const sidebar = document.querySelector("aside");
             const sidebarBtns = sidebar.querySelectorAll(".sidebarBtn");
             sidebarBtns.forEach((button) => {
                 button.addEventListener('click',() => {
                     sidebarBtns.forEach((btn) => btn.classList.remove("active"))
-                    button.classList.add("active")
+                    button.classList.add("active");
                 });
             })
-        }
-        // UIController.domManager.renderDefaultCategory('all')
+        } */
+
         const renderCategoryButtons = () => {
             categoryManager.getCategories().forEach((category) => {
                 buildCategoryButton(category)
             })
+            pubSub.publish(dynamicallySelectButton());
+            document.querySelector('#numberOfCategories').textContent = `(${categoryManager.getCategories().length})`;
         }
+
+        const dynamicallySelectButton = () => {
+            const sidebar = document.querySelector("aside");
+            const sidebarBtns = sidebar.querySelectorAll(".sidebarBtn");
+            sidebarBtns.forEach((button) => {
+                const addEventListeners = () => {
+                    sidebarBtns.forEach((btn) => btn.classList.remove("active"));
+                    button.classList.add("active");
+                }
+                button.removeEventListener('click', addEventListeners);
+                button.addEventListener('click', addEventListeners);
+            })
+        }
+
+        
+
+
+        // UIController.domManager.renderDefaultCategory('all')
+        
         
         
         const renderDefaultCategory = (defaultCategory) => {
@@ -455,6 +494,7 @@ const UIController = (() => {
                     taskManager.getTasksDueToday().forEach((task) => {
                         buildUITaskItem(task)
                     });
+                    document.querySelector('#numberOfTasks').textContent = `(${taskManager.getTasksDueToday().length})`
                     break
                 }
                 case 'week': {
@@ -463,14 +503,16 @@ const UIController = (() => {
                     taskManager.getTasksDueThisWeek().forEach((task) => {
                         buildUITaskItem(task)
                     });
+                    document.querySelector('#numberOfTasks').textContent = `(${taskManager.getTasksDueThisWeek().length})`
                     break
                 }
                 case 'important': {
                     document.querySelector('#categoryTitle').textContent = 'Important Tasks';
                     document.querySelector('#categorySummary').textContent = 'High-priority tasks that need your attention first.';
                     taskManager.getImportantTasks().forEach((task) => {
-                        buildUITaskItem(task)
+                        buildUITaskItem(task);
                     });
+                    document.querySelector('#numberOfTasks').textContent = `(${taskManager.getImportantTasks().length})`
                     break
                 }
                 case 'complete': {
@@ -479,6 +521,7 @@ const UIController = (() => {
                     taskManager.getCompletedTasks().forEach((task) => {
                         buildUICompleteTaskItem(task);
                     });
+                    document.querySelector('#numberOfTasks').textContent = `(${taskManager.getCompletedTasks().length})`
                     break
                 }
 
@@ -503,7 +546,7 @@ const UIController = (() => {
             });
         }
         
-        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems ,  buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons}
+        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems ,  buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons , renderWelcomeWindow}
     })();
  
 

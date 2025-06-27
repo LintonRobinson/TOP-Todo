@@ -2,6 +2,35 @@ import categoryManager from "./categoryManager";
 import pubsub from "./pubsub";
 import taskManager from "./taskManager";
 import UIController from "./UIController";
+document.addEventListener('DOMContentLoaded', () => {
+    
+    
+    
+    document.querySelector('.allTasks').addEventListener('click', () => {
+        pubsub.publish("clearTaskItems");
+        UIController.domManager.renderDefaultCategory('all')
+    }) 
+    document.querySelector('.todayTasks').addEventListener('click', () => {
+        pubsub.publish("clearTaskItems");
+        UIController.domManager.renderDefaultCategory('today')
+    }) 
+    document.querySelector('.weekTasks').addEventListener('click', () => {
+        pubsub.publish("clearTaskItems");
+        UIController.domManager.renderDefaultCategory('week')
+    })
+    document.querySelector('.importantTasks').addEventListener('click', () => {
+        pubsub.publish("clearTaskItems");
+        UIController.domManager.renderDefaultCategory('important')
+    })
+    document.querySelector('.completeTasks').addEventListener('click', () => {
+        pubsub.publish("clearTaskItems");
+        UIController.domManager.renderDefaultCategory('complete')
+    })
+    
+})
+
+
+
 const eventListenerController = (() => {
     const addDynamicEventListeners = () => {
         document.addEventListener("click", (event) => {
@@ -11,7 +40,9 @@ const eventListenerController = (() => {
         })
     }
     const addDefaultEventListeners = () => {
+        console.log('added');
         document.addEventListener("click", (event) => {
+            
             if (event.target.classList.contains("openCreateTask")) pubsub.publish("openTaskModule", {modalType:"create"});
             if (event.target.id === "openCreateCategory") pubsub.publish("openCategoryModule", {modalType:"create"});
             if (event.target.classList.contains("openEditTaskModal")) pubsub.publish("openTaskModule", {modalType:"edit", currentTaskId: event.target.dataset.taskId, taskObject: taskManager.getTask(event.target.dataset.taskId)});
@@ -38,11 +69,8 @@ const eventListenerController = (() => {
             
             if (event.target.classList.contains("closeModal") && event.target.matches("i")) pubsub.publish("closeModal");
             if (event.target.matches(".closeModal") && event.target.matches("button")) pubsub.publish("closeModal");
-            if (event.target.matches(".defaultCategory")) {
-                if (event.target.matches(".allTasks")) pubsub.publish("renderDefaultCategory","all");
+            
 
-            } 
-            // renderDefaultCategory
         })
 
 

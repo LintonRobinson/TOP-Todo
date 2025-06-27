@@ -265,7 +265,6 @@ section {
 }
 
 .todays-tasks-wrapper div:nth-child(2) span span {
-    text-decoration: underline;
     font-weight: 600;
 }
 

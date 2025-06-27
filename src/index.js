@@ -9,7 +9,29 @@ import eventListenerController from "./eventListeners.js"
 
 
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
+    eventListenerController.addDefaultEventListeners();
+    pubSub.subscribe("openTaskModule", UIController.domManager.openTaskModal);
+    pubSub.subscribe("openCategoryModule", UIController.domManager.openCategoryModal); 
+    pubSub.subscribe("submitNewTask", taskManager.createTask);
+    pubSub.subscribe("submitNewCategory", categoryManager.createCategory);
+    pubSub.subscribe("editTask", taskManager.editTask);
+    pubSub.subscribe("editCategory", categoryManager.editCategory);
+    pubSub.subscribe("completeTask", taskManager.moveTaskToComplete);
+    pubSub.subscribe("deleteTask", taskManager.deleteTask);
+    pubSub.subscribe("deleteCategory", categoryManager.deleteCategoryandTasks);
+    pubSub.subscribe("closeModal", UIController.domManager.closeModal);
+    pubSub.subscribe("invalidDate", UIController.domManager.displayDateError);
+    pubSub.subscribe("renderCategoryButtons", UIController.domManager.renderCategoryButtons);
+    pubSub.subscribe("renderDefaultCategory", UIController.domManager.renderDefaultCategory);
+    pubSub.subscribe("renderUserCategory", UIController.domManager.renderUserCategory);
+    pubSub.subscribe("clearTaskItems", UIController.domManager.clearTaskItems);
+    pubSub.subscribe("renderWelcomeWindow", UIController.domManager.renderWelcomeWindow);
+
+    UIController.domManager.dynamicallySelectButton() // run again for each category addition
+
     if (!localStorage.getItem("tasks")) {
         const tasks = [];
         localStorage.setItem("tasks",JSON.stringify(tasks))
@@ -27,28 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("categories")) {
         const categories = [];
         localStorage.setItem("categories",JSON.stringify(categories))
+        pubSub.publish("renderCategoryButtons");
+        pubSub.publish("renderWelcomeWindow");
+
+
     } else {
         categoryManager.setCategories(JSON.parse(localStorage.getItem("categories")))
-        // console.log(categories)
+        pubSub.publish("renderCategoryButtons");
+        pubSub.publish("renderWelcomeWindow");
+        
+
+
     }
+    
 
-    eventListenerController.addDefaultEventListeners();
-    pubSub.subscribe("openTaskModule", UIController.domManager.openTaskModal);
-    pubSub.subscribe("openCategoryModule", UIController.domManager.openCategoryModal); 
-    pubSub.subscribe("submitNewTask", taskManager.createTask);
-    pubSub.subscribe("submitNewCategory", categoryManager.createCategory);
-    pubSub.subscribe("editTask", taskManager.editTask);
-    pubSub.subscribe("editCategory", categoryManager.editCategory);
-    pubSub.subscribe("completeTask", taskManager.moveTaskToComplete);
-    pubSub.subscribe("deleteTask", taskManager.deleteTask);
-    pubSub.subscribe("deleteCategory", categoryManager.deleteCategoryandTasks);
-    pubSub.subscribe("closeModal", UIController.domManager.closeModal);
-    pubSub.subscribe("invalidDate", UIController.domManager.displayDateError);
-    pubSub.subscribe("renderCategoryButtons", UIController.domManager.renderCategoryButtons);
-    pubSub.subscribe("renderDefaultCategory", UIController.domManager.renderDefaultCategory);
-    pubSub.subscribe("renderUserCategory", UIController.domManager.renderUserCategory);
-
-    UIController.domManager.dynamicallySelectButton() // run again for each category addition
+    
     
     // UIController.domManager.buildUITaskItem(taskManager.getTask("a9fa148b-684d-4e42-a4ce-71a0cf92b388"))
 });
