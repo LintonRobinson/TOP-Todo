@@ -1,30 +1,9 @@
 import taskManager from "./taskManager.js"
 const categoryManager = (() => {
-    let activeCategory = "allTasks"
+    let activeCategory
     let categories
 
-    let defaultCategories = [
-        {
-            categoryName: "All",
-            categoryDescription: "View every task you’ve created, no matter the category or status.",
-        },
-        {
-            categoryName: "Today",
-            categoryDescription: "Tasks due today — perfect for staying focused and on track.",
-        },
-        {
-            categoryName: "Week",
-            categoryDescription: "All tasks scheduled for this week — stay on top of what’s ahead.",
-        },
-        {
-            categoryName: "Important",
-            categoryDescription: "High-priority tasks that need your attention first.",
-        },
-        {
-            categoryName: "Complete",
-            categoryDescription: "A list of tasks you’ve checked off — celebrate your progress!",
-        },
-    ]
+    
     // Update Storage
     document.addEventListener("DOMContentLoaded", () => {
         
@@ -83,7 +62,6 @@ const categoryManager = (() => {
 
     const editCategory = ({categoryId,updatedCategory}) => {
         const currentCategoryIndex = getIndexByID(categoryId)
-        console.log(currentCategoryIndex)
         categories[currentCategoryIndex] = new Category(updatedCategory);
         categories[currentCategoryIndex].id = categoryId;
         saveToLocalStorage()
@@ -104,7 +82,7 @@ const categoryManager = (() => {
         localStorage.setItem("categories",JSON.stringify(categories));
     }
 
-    
+
 
     return { createCategory , getCategory , setCategories , getCategoryName , editCategory , deleteCategoryandTasks , getActiveCategory, setActiveCategory , getCategories }
 })();

@@ -29,12 +29,16 @@ document.addEventListener("DOMContentLoaded", () => {
     pubSub.subscribe("renderUserCategory", UIController.domManager.renderUserCategory);
     pubSub.subscribe("clearTaskItems", UIController.domManager.clearTaskItems);
     pubSub.subscribe("renderWelcomeWindow", UIController.domManager.renderWelcomeWindow);
+    pubSub.subscribe("buildDummyTaskItem", UIController.domManager.buildDummyTaskItem);
+    pubSub.subscribe("addCategoryEventListeners", eventListenerController.addCategoryEventListeners);
+    pubSub.subscribe("dynamicallySelectButton", UIController.domManager.dynamicallySelectButton);
 
     UIController.domManager.dynamicallySelectButton() // run again for each category addition
 
     if (!localStorage.getItem("tasks")) {
         const tasks = [];
         localStorage.setItem("tasks",JSON.stringify(tasks))
+        taskManager.setTasks(tasks)
     } else {
         taskManager.setTasks(JSON.parse(localStorage.getItem("tasks")));  
     }
@@ -42,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("completeTasks")) {
         const completeTaskstasks = [];
         localStorage.setItem("completeTasks", JSON.stringify(completeTaskstasks))
+        taskManager.setCompleteTasks(completeTaskstasks)
     } else {
         taskManager.setCompleteTasks(JSON.parse(localStorage.getItem("completeTasks")));  
     }
@@ -49,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("categories")) {
         const categories = [];
         localStorage.setItem("categories",JSON.stringify(categories))
-        categoryManager.setCategories([])
+        categoryManager.setCategories(categories)
         categoryManager.createCategory({ categoryName: 'Personal', categoryDescription: 'Your personal tasks.'})
         pubSub.publish("renderCategoryButtons");
         //pubSub.publish("renderWelcomeWindow");
@@ -65,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
 
-    
+    if (taskManager.getTasks().length === 0) UIController.domManager.buildDummyTaskItem()
     
     // UIController.domManager.buildUITaskItem(taskManager.getTask("a9fa148b-684d-4e42-a4ce-71a0cf92b388"))
 });

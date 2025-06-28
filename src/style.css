@@ -181,6 +181,7 @@ nav > div {
 
 .category-wrapper button div {
     display: flex;
+    align-items: center;
     gap: 10px;
 }
 
@@ -216,7 +217,9 @@ aside > div:nth-child(2) {
     width: 20px;
 }
 
-
+.userCategory div:nth-child(1) {
+    pointer-events: none;
+}
 
 
 

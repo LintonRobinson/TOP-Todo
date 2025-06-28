@@ -9,7 +9,6 @@ import { getHours } from "date-fns";
 import { getMinutes } from "date-fns";
 
 
-// INstead of on load, subscribe to rendering and the trigger is the loading of local storage
 const UIController = (() => { 
     
     const renderWelcomeWindow = (() => {
@@ -49,7 +48,7 @@ const UIController = (() => {
         
         categoryItem: {
             get getButton() {
-                return new Element("button").setElementAttribute({class: "sidebarBtn button"})
+                return new Element("button");
             }, 
             get createDiv() {
                 return new Element("div")
@@ -115,25 +114,53 @@ const UIController = (() => {
     
     const domManager = (() => {
         
-        const buildCategoryButton = (category) => {
-            const categoriesWrapper = document.querySelector(".category-wrapper");                
-                    const newCategoryBtn = uiItems.categoryItem.getButton.setElementAttribute({"data-category-id": category.id}); 
-                    const categoryWrapperLeft = uiItems.categoryItem.createDiv;
-                    const categoryWrapperRight = uiItems.categoryItem.createDiv;
-                    const categoryName = uiItems.categoryItem.createSpan.addInnerText(category.name);
-
-                    const categoryIcon = uiItems.categoryItem.createCategoryIcon;
-                    const editCategoryIcon = uiItems.categoryItem.createEditIcon;
-                    const deleteCategoryIcon = uiItems.categoryItem.createDeleteIcon;
-                    
+        const buildDummyTaskItem = () => {
+            const tasksWrapper = document.querySelector(".tasks-wrapper")
             
-                    editCategoryIcon.setElementAttribute({"data-category-id": category.id})
-                    deleteCategoryIcon.setElementAttribute({"data-category-id": category.id})
+            const newTaskWrapper = uiItems.taskItem.getIndividualTaskWrapper;
+            
+            const taskWrapperLeft = uiItems.taskItem.createDiv;
+            const taskWrapperRight = uiItems.taskItem.createDiv;
+            
+            const taskDot = uiItems.taskItem.createDiv;
+            const taskName = uiItems.taskItem.createSpan;
+            const viewTaskIcon = new Element("i").setElementAttribute({class:"fa-regular fa-eye", "aria-hidden": true})
+            const editTaskIcon = new Element("i").setElementAttribute({class:"fa-solid fa-pen-to-square", "aria-hidden": true})
+            const deleteTaskIcon = new Element("i").setElementAttribute({class:"fa-regular fa-trash ", "aria-hidden": true})
+            
+            taskName.addInnerText("Create Your First Task!")
+            
+
+            taskWrapperLeft.addChildElement([taskDot,taskName])
+            taskWrapperRight.addChildElement([viewTaskIcon,editTaskIcon,deleteTaskIcon])
+            newTaskWrapper.addChildElement([taskWrapperLeft,taskWrapperRight])  
+            tasksWrapper.appendChild(newTaskWrapper.build());
+
+        }
         
-                    categoryWrapperLeft.addChildElement([categoryIcon,categoryName])
-                    categoryWrapperRight.addChildElement([editCategoryIcon,deleteCategoryIcon])
-                    newCategoryBtn.addChildElement([categoryWrapperLeft,categoryWrapperRight])  
-                    categoriesWrapper.appendChild(newCategoryBtn.build());
+        const buildCategoryButton = (category) => {
+            
+            const categoriesWrapper = document.querySelector(".category-wrapper");                
+            const newCategoryBtn = uiItems.categoryItem.getButton.setElementAttribute({"data-category-id": category.id}); 
+            if (categoryManager.getActiveCategory() === category.id) {
+                newCategoryBtn.setElementAttribute({class: "userCategory sidebarBtn button active"})
+            } else {
+                newCategoryBtn.setElementAttribute({class: "userCategory sidebarBtn button"})
+            }
+            const categoryWrapperLeft = uiItems.categoryItem.createDiv;
+            const categoryWrapperRight = uiItems.categoryItem.createDiv;
+            const categoryName = uiItems.categoryItem.createSpan.addInnerText(category.name);
+
+            const categoryIcon = uiItems.categoryItem.createCategoryIcon;
+            const editCategoryIcon = uiItems.categoryItem.createEditIcon;
+            const deleteCategoryIcon = uiItems.categoryItem.createDeleteIcon;
+            editCategoryIcon.setElementAttribute({"data-category-id": category.id})
+            deleteCategoryIcon.setElementAttribute({"data-category-id": category.id})
+
+            categoryWrapperLeft.addChildElement([categoryIcon,categoryName])
+            categoryWrapperRight.addChildElement([editCategoryIcon,deleteCategoryIcon])
+            newCategoryBtn.addChildElement([categoryWrapperLeft,categoryWrapperRight])  
+            categoriesWrapper.appendChild(newCategoryBtn.build());
         }
 
         const buildUITaskItem = (task) => {
@@ -375,7 +402,6 @@ const UIController = (() => {
                 
                 }
                 case "delete": {
-                    //console.log(currentCategoryId)
                     formHeader.addInnerText("Warning: This category and all it's tasks will be deleted.");
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
                     const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "deleteCategory", type:"button", "data-category-id": currentCategoryId}).addInnerText("Delete Category");
@@ -450,14 +476,26 @@ const UIController = (() => {
         } */
 
         const renderCategoryButtons = () => {
+            const categoriesWrapper = document.querySelector('.category-wrapper');
+            const categoryButtons = document.querySelectorAll('.userCategory');
+            categoryButtons.forEach((button) => categoriesWrapper.removeChild(button))
             categoryManager.getCategories().forEach((category) => {
                 buildCategoryButton(category)
             })
-            pubSub.publish(dynamicallySelectButton());
+            if (categoryManager.getActiveCategory() === undefined) {
+                pubSub.publish('addCategoryEventListeners');
+                dynamicallySelectButton();
+
+            }
+            
+            
+
             document.querySelector('#numberOfCategories').textContent = `(${categoryManager.getCategories().length})`;
         }
 
+        
         const dynamicallySelectButton = () => {
+        
             const sidebar = document.querySelector("aside");
             const sidebarBtns = sidebar.querySelectorAll(".sidebarBtn");
             sidebarBtns.forEach((button) => {
@@ -473,7 +511,6 @@ const UIController = (() => {
         
 
 
-        // UIController.domManager.renderDefaultCategory('all')
         
         
         
@@ -482,6 +519,7 @@ const UIController = (() => {
                 case 'all': {
                     document.querySelector('#categoryTitle').textContent = 'All Tasks';
                     document.querySelector('#categorySummary').textContent = 'View every task you’ve created, no matter the category or status.';
+                    if (taskManager.getTasks().length)
                     taskManager.getTasks().forEach((task) => {
                         buildUITaskItem(task)
                     });
@@ -491,36 +529,49 @@ const UIController = (() => {
                 case 'today': {
                     document.querySelector('#categoryTitle').textContent = 'Today’s Tasks';
                     document.querySelector('#categorySummary').textContent = 'Tasks due today — perfect for staying focused and on track.';
-                    taskManager.getTasksDueToday().forEach((task) => {
-                        buildUITaskItem(task)
-                    });
+                    // If the legth of get tasks is greater than 0
+                    if (taskManager.getTasks().length) {
+                        taskManager.getTasksDueToday().forEach((task) => {
+                            buildUITaskItem(task)
+                        });
+                    }
+                    
                     document.querySelector('#numberOfTasks').textContent = `(${taskManager.getTasksDueToday().length})`
                     break
                 }
                 case 'week': {
                     document.querySelector('#categoryTitle').textContent = 'This Week’s Tasks';
                     document.querySelector('#categorySummary').textContent = 'All tasks scheduled for this week — stay on top of what’s ahead.';
-                    taskManager.getTasksDueThisWeek().forEach((task) => {
-                        buildUITaskItem(task)
-                    });
+                    if (taskManager.getTasks().length) {
+                        taskManager.getTasksDueThisWeek().forEach((task) => {
+                            buildUITaskItem(task)
+                        });
+                    }
+                    
                     document.querySelector('#numberOfTasks').textContent = `(${taskManager.getTasksDueThisWeek().length})`
                     break
                 }
                 case 'important': {
                     document.querySelector('#categoryTitle').textContent = 'Important Tasks';
                     document.querySelector('#categorySummary').textContent = 'High-priority tasks that need your attention first.';
-                    taskManager.getImportantTasks().forEach((task) => {
-                        buildUITaskItem(task);
-                    });
+                    if (taskManager.getTasks().length) {
+                        taskManager.getImportantTasks().forEach((task) => {
+                            buildUITaskItem(task);
+                        });
+                    }
+                    
                     document.querySelector('#numberOfTasks').textContent = `(${taskManager.getImportantTasks().length})`
                     break
                 }
                 case 'complete': {
                     document.querySelector('#categoryTitle').textContent = 'Completed Tasks';
                     document.querySelector('#categorySummary').textContent = 'A list of tasks you’ve checked off — celebrate your progress!';
-                    taskManager.getCompletedTasks().forEach((task) => {
-                        buildUICompleteTaskItem(task);
-                    });
+                    if (taskManager.getTasks().length) {
+                        taskManager.getCompletedTasks().forEach((task) => {
+                            buildUICompleteTaskItem(task);
+                        });
+                    }
+                    
                     document.querySelector('#numberOfTasks').textContent = `(${taskManager.getCompletedTasks().length})`
                     break
                 }
@@ -529,6 +580,8 @@ const UIController = (() => {
         }
 
         const renderUserCategory = (categoryId) => {
+            document.querySelector('#categoryTitle').textContent = categoryManager.getCategory(categoryId).name;
+            document.querySelector('#categorySummary').textContent = categoryManager.getCategory(categoryId).description;
             taskManager.getTasks().forEach((task) => {
                 if (task.category === categoryId) {
                     buildUITaskItem(task)
@@ -546,7 +599,7 @@ const UIController = (() => {
             });
         }
         
-        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems ,  buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons , renderWelcomeWindow}
+        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems , buildDummyTaskItem , buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons , renderWelcomeWindow}
     })();
  
 
