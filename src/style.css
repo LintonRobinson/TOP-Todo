@@ -478,11 +478,11 @@ select {
 }
 
 
-input:user-invalid , textarea:user-invalid  {
+input:user-invalid , textarea:user-invalid , select:user-invalid  {
     border: solid #fa3d3d 1px;
 }
 
-input:user-valid , textarea:user-valid  {
+input:user-valid , textarea:user-valid , option:user-valid {
     border: solid #4ccb63 1px;
 }
 

@@ -6,11 +6,6 @@ import UIController from "./UIController.js"
 import pubSub from "./pubsub.js"
 import eventListenerController from "./eventListeners.js"
 
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
     eventListenerController.addDefaultEventListeners();
     pubSub.subscribe("openTaskModule", UIController.domManager.openTaskModal);
@@ -32,15 +27,18 @@ document.addEventListener("DOMContentLoaded", () => {
     pubSub.subscribe("buildDummyTaskItem", UIController.domManager.buildDummyTaskItem);
     pubSub.subscribe("addCategoryEventListeners", eventListenerController.addCategoryEventListeners);
     pubSub.subscribe("dynamicallySelectButton", UIController.domManager.dynamicallySelectButton);
+    pubSub.subscribe("colorPastDueDates",  UIController.domManager.colorPastDueDates);
 
-    UIController.domManager.dynamicallySelectButton() // run again for each category addition
+    UIController.domManager.dynamicallySelectButton()
 
     if (!localStorage.getItem("tasks")) {
         const tasks = [];
         localStorage.setItem("tasks",JSON.stringify(tasks))
         taskManager.setTasks(tasks)
     } else {
-        taskManager.setTasks(JSON.parse(localStorage.getItem("tasks")));  
+        taskManager.setTasks(JSON.parse(localStorage.getItem("tasks"))); 
+        categoryManager.setActiveCategory('allTasks')
+        pubSub.publish('renderDefaultCategory','all') 
     }
 
     if (!localStorage.getItem("completeTasks")) {
@@ -57,22 +55,17 @@ document.addEventListener("DOMContentLoaded", () => {
         categoryManager.setCategories(categories)
         categoryManager.createCategory({ categoryName: 'Personal', categoryDescription: 'Your personal tasks.'})
         pubSub.publish("renderCategoryButtons");
-        //pubSub.publish("renderWelcomeWindow");
+        pubSub.publish("renderWelcomeWindow");
 
 
     } else {
         categoryManager.setCategories(JSON.parse(localStorage.getItem("categories")))
         pubSub.publish("renderCategoryButtons");
         pubSub.publish("renderWelcomeWindow");
-
-
-
     }
     
-
     if (taskManager.getTasks().length === 0) UIController.domManager.buildDummyTaskItem()
     
-    // UIController.domManager.buildUITaskItem(taskManager.getTask("a9fa148b-684d-4e42-a4ce-71a0cf92b388"))
 });
 
 window.categoryManager = categoryManager;

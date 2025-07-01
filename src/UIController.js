@@ -4,25 +4,13 @@ import taskManager from "./taskManager.js";
 import pubSub from "./pubsub.js";
 import { format } from "date-fns";
 import { parse } from "date-fns";
-import { isAfter } from "date-fns";
+import { isBefore } from "date-fns";
 import { getHours } from "date-fns";
 import { getMinutes } from "date-fns";
 
 
 const UIController = (() => { 
     
-    const renderWelcomeWindow = (() => {
-        const greetingMessage = document.querySelector('#greetingMessage');
-        const numberOfTodaysTasks = document.querySelector('#numberOfTodaysTasks');
-        taskManager.getTasksDueToday().length === 1 ? numberOfTodaysTasks.textContent = `(${taskManager.getTasksDueToday().length}) task due today.`: `(${taskManager.getTasksDueToday().length}) tasks due today.`;
-        
-        if (getHours(new Date()) >= 12 && getMinutes(new Date()) > 0) {
-            greetingMessage.textContent = 'Good evening.';
-        } else {
-            greetingMessage.textContent = 'Good morning.'
-        }
-
-    })
     
     const uiItems = {  
         taskItem: {
@@ -114,6 +102,22 @@ const UIController = (() => {
     
     const domManager = (() => {
         
+        const renderWelcomeWindow = (() => {
+            const greetingMessage = document.querySelector('#greetingMessage');
+            const numberOfTodaysTasks = document.querySelector('#numberOfTodaysTasks');
+            taskManager.getTasksDueToday().length === 1 ? numberOfTodaysTasks.textContent = `(${taskManager.getTasksDueToday().length}) task due today.`: numberOfTodaysTasks.textContent = `(${taskManager.getTasksDueToday().length}) tasks due today.`;
+            
+            if (getHours(new Date()) >= 18 && getMinutes(new Date()) > 0) {
+                greetingMessage.textContent = 'Good evening.';
+            } else if (getHours(new Date()) >= 12) {
+                greetingMessage.textContent = 'Good afternoon.'
+            } else {
+                greetingMessage.textContent = 'Good morning.'
+            }
+    
+        })
+
+
         const buildDummyTaskItem = () => {
             const tasksWrapper = document.querySelector(".tasks-wrapper")
             
@@ -164,8 +168,8 @@ const UIController = (() => {
         }
 
         const buildUITaskItem = (task) => {
-            const tasksWrapper = document.querySelector(".tasks-wrapper")
             
+            const tasksWrapper = document.querySelector(".tasks-wrapper")
             const newTaskWrapper = uiItems.taskItem.getIndividualTaskWrapper;
             
             const taskWrapperLeft = uiItems.taskItem.createDiv;
@@ -178,6 +182,7 @@ const UIController = (() => {
             const deleteTaskIcon = uiItems.taskItem.createDeleteIcon;
             
             taskName.addInnerText(task.name)
+            
             viewTaskIcon.setElementAttribute({"data-task-id": task.id})
             editTaskIcon.setElementAttribute({"data-task-id": task.id})
             deleteTaskIcon.setElementAttribute({"data-task-id": task.id})
@@ -205,11 +210,10 @@ const UIController = (() => {
 
 
 
-        
-
-
-
-        const openTaskModal = ({modalType, taskObject, currentTaskId}) => {
+        const openTaskModal = ({modalType, currentTaskId}) => {
+            
+            const taskObject = taskManager.getTask(currentTaskId)
+            
             // Initialize (Create Elements)
             const modalWrapper = uiItems.modal.createDiv.setElementAttribute({class: "modal-wrapper"});
             const modalForm = uiItems.modal.createForm;
@@ -220,28 +224,32 @@ const UIController = (() => {
             const taskCategoryWrapper = uiItems.modal.createWrapper; 
             const taskCategoryLabel = uiItems.modal.createLabel.setElementAttribute({for: "taskCategory"}).addInnerText("Task Category");
 
-
-            // Dynamically Create Category Dropdown
-             (() => {
-                const taskCategoriesSelect = uiItems.modal.createSelectGroup.setElementAttribute({name:"categories", id:"taskCategories"});
-                if (categoryManager.getActiveCategory() === "allTasks") {
-                    const taskOptionCategories = []
-                    categoryManager.getCategories().forEach((category) => {
-                        taskOptionCategories.push({categoryId: category.id, categoryName: category.name})
-                    });
-                    
-                    taskOptionCategories.forEach((optionObject) => {
-                        const taskCategory = uiItems.modal.createSelectOption.setElementAttribute({value: optionObject.categoryId}).addInnerText(optionObject.categoryName);
+            if (modalType !== 'delete') {
+                (() => {
+                    const taskCategoriesSelect = uiItems.modal.createSelectGroup.setElementAttribute({name:"categories", id:"taskCategories"});
+                    if (categoryManager.getActiveCategory() === "allTasks" || categoryManager.getActiveCategory() === "todayTasks" || categoryManager.getActiveCategory() === "weekTasks" || categoryManager.getActiveCategory() === "importantTasks" || categoryManager.getActiveCategory() === "completeTasks") {
+                        const taskOptionCategories = []
+                        categoryManager.getCategories().forEach((category) => {
+                            taskOptionCategories.push({categoryId: category.id, categoryName: category.name})
+                        });
+                        
+                        taskOptionCategories.forEach((optionObject) => {
+                            const taskCategory = uiItems.modal.createSelectOption.setElementAttribute({value: optionObject.categoryId}).addInnerText(optionObject.categoryName);
+                            //if (taskObject.category)
+                            taskCategoriesSelect.addChildElement(taskCategory);
+                        });
+                    } else {
+                        const taskCategory = uiItems.modal.createSelectOption.setElementAttribute({value: categoryManager.getActiveCategory()}).addInnerText(categoryManager.getCategoryName(categoryManager.getActiveCategory()));
                         taskCategoriesSelect.addChildElement(taskCategory);
-                    });
-                } else {
-                    const taskCategory = uiItems.modal.createSelectOption.setElementAttribute({value: categoryManager.getActiveCategory()}).addInnerText(categoryManager.getCategoryName(categoryManager.getActiveCategory()));
-                    taskCategoriesSelect.addChildElement(taskCategory);
-                };
-
-                if (modalType === "view") taskCategoriesSelect.setElementAttribute({disabled: ""});
-                taskCategoryWrapper.addChildElement([taskCategoryLabel,taskCategoriesSelect]);
-            })()
+                    };
+    
+                    if (modalType === "view") taskCategoriesSelect.setElementAttribute({disabled: ""});
+                    taskCategoryWrapper.addChildElement([taskCategoryLabel,taskCategoriesSelect]);
+                    
+    
+                })()
+            }
+             
       
             
             const taskDueDateWrapper = uiItems.modal.createWrapper;
@@ -262,8 +270,7 @@ const UIController = (() => {
             const markAsImportantText = uiItems.modal.createMarkAsImportantText;
             const closeIcon = uiItems.modal.createCloseIcon;
 
-            
-            
+        
 
             // Add children (sub children first)
             taskNameWrapper.addChildElement([taskNameLabel,taskNameInput]);
@@ -335,11 +342,9 @@ const UIController = (() => {
             modalWrapper.addChildElement(modalForm)
             const modalWrapperElement = modalWrapper.build()
             document.querySelector("body").appendChild(modalWrapperElement)
-        
-            // if (modalType === "view" && isAfter(parse(taskObject.taskDueDate,"yyyy-MM-dd",new Date()), new Date())) document.querySelector('#taskDueDate').style.backgroundColor = "red"; 
+            if (modalType !== 'delete') colorPastDueDates()
 
-            // Update select after its creation
-            if (modalType === "edit" || modalType === "view") document.querySelector("select").value = taskManager.getTaskCategory(currentTaskId);
+            
             // Update textarea(s) after its creation
             if (modalType === "edit" || modalType === "view") {
                 document.querySelector("#taskDescription").value = taskObject.description;
@@ -347,9 +352,34 @@ const UIController = (() => {
                 if (taskObject.importantStatus) document.querySelector("#taskImportantStatus").checked = true;
             }
             
-            if (modalType === "delete") document.querySelector("form").classList.add("delete")
-
+            if (modalType === "delete") document.querySelector("form").classList.add("delete");
+        
+            switch (categoryManager.getActiveCategory()) {
+                case 'allTasks':
+                    if (modalType === "edit" || modalType === "view") updateFormSelectedCategory(taskObject.category)
+                    break
+                case 'todayTasks':
+                    if (modalType === "edit" || modalType === "view") updateFormSelectedCategory(taskObject.category)
+                    break
+                case 'weekTasks':
+                    if (modalType === "edit" || modalType === "view") updateFormSelectedCategory(taskObject.category)
+                    break
+                case 'importantTasks':
+                    if (modalType === "edit" || modalType === "view") updateFormSelectedCategory(taskObject.category)
+                    break
+                case 'completeTasks':
+                    if (modalType === "edit" || modalType === "view") updateFormSelectedCategory(taskObject.category)
+                    break
+            }
+            if (categoryManager.getActiveCategory() !== "allTasks" && categoryManager.getActiveCategory() !== "todayTasks" && categoryManager.getActiveCategory() !== "weekTasks" && categoryManager.getActiveCategory() !== "importantTasks" && categoryManager.getActiveCategory() !== "completeTasks" && modalType !== 'delete') document.querySelector('select').value = categoryManager.getActiveCategory();
             
+           
+            
+        }
+        
+        const colorPastDueDates = () => {
+            isBefore(parse(document.querySelector('#taskDueDate').value,"yyyy-MM-dd",new Date()), new Date()) ? document.querySelector('#taskDueDate').style.color = "red": document.querySelector('#taskDueDate').style.color = "black"
+
         }
 
         const openCategoryModal = ({modalType, categoryObject, currentCategoryId }) => {
@@ -416,13 +446,7 @@ const UIController = (() => {
             modalWrapper.addChildElement(modalForm)
             const modalWrapperElement = modalWrapper.build()
             document.querySelector("body").appendChild(modalWrapperElement)
-
-            // Update select after its creation
-            // Update textarea(s) after its creation
             if (modalType === "edit" || modalType === "view") document.querySelector("#categoryDescription").value = categoryObject.description;
-        
-
-            
             if (modalType === "delete") document.querySelector("form").classList.add("delete")
 
             
@@ -449,7 +473,6 @@ const UIController = (() => {
         const getCategoryValues = () => {
             const categoryName = document.querySelector("#categoryName").value; 
             const categoryDescription = document.querySelector("#categoryDescription").value;
-            console.log(categoryName, categoryDescription)
             return { categoryName: categoryName , categoryDescription: categoryDescription }
 
         }
@@ -463,17 +486,6 @@ const UIController = (() => {
             taskForm.appendChild(errorMessage);
         }
 
-        
-        /* const dynamicallySelectButton = () => {
-            const sidebar = document.querySelector("aside");
-            const sidebarBtns = sidebar.querySelectorAll(".sidebarBtn");
-            sidebarBtns.forEach((button) => {
-                button.addEventListener('click',() => {
-                    sidebarBtns.forEach((btn) => btn.classList.remove("active"))
-                    button.classList.add("active");
-                });
-            })
-        } */
 
         const renderCategoryButtons = () => {
             const categoriesWrapper = document.querySelector('.category-wrapper');
@@ -482,7 +494,8 @@ const UIController = (() => {
             categoryManager.getCategories().forEach((category) => {
                 buildCategoryButton(category)
             })
-            if (categoryManager.getActiveCategory() === undefined) {
+            
+            if (categoryManager.getActiveCategory() === 'allTasks') {
                 pubSub.publish('addCategoryEventListeners');
                 dynamicallySelectButton();
 
@@ -508,10 +521,10 @@ const UIController = (() => {
             })
         }
 
-        
 
-
-        
+        const updateFormSelectedCategory = (selectedCategoryId) => {
+            document.querySelector("select").value = selectedCategoryId;
+        }
         
         
         const renderDefaultCategory = (defaultCategory) => {
@@ -529,8 +542,7 @@ const UIController = (() => {
                 case 'today': {
                     document.querySelector('#categoryTitle').textContent = 'Today’s Tasks';
                     document.querySelector('#categorySummary').textContent = 'Tasks due today — perfect for staying focused and on track.';
-                    // If the legth of get tasks is greater than 0
-                    if (taskManager.getTasks().length) {
+                    if (taskManager.getTasksDueToday().length) {
                         taskManager.getTasksDueToday().forEach((task) => {
                             buildUITaskItem(task)
                         });
@@ -566,11 +578,12 @@ const UIController = (() => {
                 case 'complete': {
                     document.querySelector('#categoryTitle').textContent = 'Completed Tasks';
                     document.querySelector('#categorySummary').textContent = 'A list of tasks you’ve checked off — celebrate your progress!';
-                    if (taskManager.getTasks().length) {
+                    if (taskManager.getCompletedTasks().length) {
                         taskManager.getCompletedTasks().forEach((task) => {
                             buildUICompleteTaskItem(task);
                         });
-                    }
+                    } 
+                    
                     
                     document.querySelector('#numberOfTasks').textContent = `(${taskManager.getCompletedTasks().length})`
                     break
@@ -580,13 +593,18 @@ const UIController = (() => {
         }
 
         const renderUserCategory = (categoryId) => {
+            
             document.querySelector('#categoryTitle').textContent = categoryManager.getCategory(categoryId).name;
             document.querySelector('#categorySummary').textContent = categoryManager.getCategory(categoryId).description;
             taskManager.getTasks().forEach((task) => {
                 if (task.category === categoryId) {
                     buildUITaskItem(task)
-                } 
+                }
+                
+                
             })
+            document.querySelector('#numberOfTasks').textContent = `(${taskManager.getTasksByCategory(categoryId).length})`
+            if (taskManager.getTasks().length === 0) buildDummyTaskItem()
         }
 
 
@@ -599,7 +617,7 @@ const UIController = (() => {
             });
         }
         
-        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems , buildDummyTaskItem , buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons , renderWelcomeWindow}
+        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems , buildDummyTaskItem , buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons , renderWelcomeWindow , updateFormSelectedCategory , colorPastDueDates}
     })();
  
 

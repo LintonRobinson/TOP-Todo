@@ -53,7 +53,9 @@ const categoryManager = (() => {
     
 
     const createCategory = ({categoryName , categoryDescription, categoryId}) => {
+        setCategories(JSON.parse(localStorage.getItem("categories")))
         const newCategory = new Category({categoryName , categoryDescription , categoryId});
+        categoryManager.setActiveCategory(newCategory.id)
         categories.push(newCategory);
         saveToLocalStorage()
     }
@@ -61,16 +63,23 @@ const categoryManager = (() => {
     
 
     const editCategory = ({categoryId,updatedCategory}) => {
-        const currentCategoryIndex = getIndexByID(categoryId)
-        categories[currentCategoryIndex] = new Category(updatedCategory);
-        categories[currentCategoryIndex].id = categoryId;
+        let currentStateCategories = JSON.parse(localStorage.getItem("categories"));
+        const categoryIndex = currentStateCategories.findIndex((category) => category.id === categoryId);
+        currentStateCategories[categoryIndex] = new Category(updatedCategory);
+        currentStateCategories[categoryIndex].id = categoryId;
+        setCategories(currentStateCategories)
+        categoryManager.setActiveCategory(categoryId)
         saveToLocalStorage()
     }
 
 
     const deleteCategoryandTasks = (categoryId) => {
-        categories.splice(getIndexByID(categoryId), 1)
+        let currentStateCategories = JSON.parse(localStorage.getItem("categories"));
+        const categoryIndex = currentStateCategories.findIndex((category) => category.id === categoryId);
+        currentStateCategories.splice(categoryIndex , 1)
+        setCategories(currentStateCategories);
         taskManager.deleteTasksByCategory(categoryId)
+        setActiveCategory('allTasks')
         saveToLocalStorage()
     }
 
@@ -89,6 +98,3 @@ const categoryManager = (() => {
 
 
 export default categoryManager
-
-
-// Keep all tasks in one array and dynamically sort them and display on page 

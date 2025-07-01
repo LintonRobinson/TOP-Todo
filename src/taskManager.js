@@ -1,5 +1,6 @@
 import { isToday, parse } from "date-fns";
 import { isThisWeek } from "date-fns";
+import categoryManager from "./categoryManager";
 
 
 const taskManager = (() => {
@@ -41,12 +42,14 @@ const taskManager = (() => {
     }
 
     const getIndexByID = (taskId) => {
-        return tasks.findIndex((task) => task.id === taskId);
+        return getTasks().findIndex((task) => task.id === taskId);
     }
 
 
 
     const createTask = ({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskId,taskCategory}) => {       
+        setTasks(JSON.parse(localStorage.getItem("tasks"))); 
+        categoryManager.setActiveCategory(taskCategory)
         const newTask = new Task({taskName,taskDescription,taskDueDate,taskImportantStatus,taskNotes,taskCategory, taskId});
         tasks.push(newTask)
         saveToLocalStorage()
@@ -55,23 +58,37 @@ const taskManager = (() => {
     }
         
     const editTask = ({taskId,updatedTask}) => {
-        const currentTaskIndex = getIndexByID(taskId)    
-        tasks[currentTaskIndex] = new Task(updatedTask);
-        tasks[currentTaskIndex].id = taskId;
-        tasks[currentTaskIndex].category = updatedTask.taskCategory;     
+        let currentStateTasks = JSON.parse(localStorage.getItem("tasks"));
+        const taskIndex = currentStateTasks.findIndex((task) => task.id === taskId);
+        currentStateTasks[taskIndex] = new Task(updatedTask);
+        currentStateTasks[taskIndex].id = taskId;
+        currentStateTasks[taskIndex].category = updatedTask.taskCategory;   
+        setTasks(currentStateTasks)  
+        const taskCategory = currentStateTasks[taskIndex].category 
+        
+        categoryManager.setActiveCategory(taskCategory)
+        console.log(categoryManager.getActiveCategory())
         saveToLocalStorage()
     }
 
 
 
     const deleteTask = (taskId) => {
-        tasks.splice(getIndexByID(taskId),1)
+        let currentStateTasks = JSON.parse(localStorage.getItem("tasks"))
+        const taskIndex = currentStateTasks.findIndex((task) => task.id === taskId);
+        const taskCategory = currentStateTasks[taskIndex].category
+        currentStateTasks.splice(taskIndex, 1)
+        setTasks(currentStateTasks)
+        categoryManager.setActiveCategory(taskCategory)
         saveToLocalStorage()
+
     }
 
+
     const deleteTasksByCategory = (categoryId) => {
-        const newTasks = tasks.filter((task) => task.category !== categoryId);
-        tasks = newTasks;
+        let currentStateTasks = JSON.parse(localStorage.getItem("tasks"))
+        const newTasks = currentStateTasks.filter((task) => task.category !== categoryId);
+        setTasks(newTasks);
         saveToLocalStorage();
     }
 
@@ -114,7 +131,6 @@ const taskManager = (() => {
         return importantTasks
     };
 
-
     const getTaskCategory = (taskId) => {
         const task = tasks.find((task) => task.id = taskId)
         const categoryId = task.category
@@ -123,20 +139,22 @@ const taskManager = (() => {
 
 
     const moveTaskToComplete = ({taskId, taskName}) => {
-        console.log(taskName)
+       
         completeTasks.push(taskName);
         deleteTask(taskId);
         saveToLocalStorage();
+        categoryManager.setActiveCategory('complete')
     }
 
     const saveToLocalStorage = () => {
-        localStorage.setItem("tasks",JSON.stringify(tasks));
-        localStorage.setItem("completeTasks",JSON.stringify(completeTasks));
+        localStorage.setItem("tasks",JSON.stringify(getTasks()));
+        localStorage.setItem("completeTasks",JSON.stringify(getCompletedTasks()));
+        //pubSub.publish("renderWelcomeWindow");
     }
 
 
 
-    return { getTasks, getCompletedTasks , setTasks , setCompleteTasks , getTask , getTaskCategory , getTasksByCategory , getTasksDueToday , getTasksDueThisWeek , getImportantTasks , createTask , editTask , deleteTask , deleteTasksByCategory , moveTaskToComplete}
+    return { tasks , getTasks, getCompletedTasks , setTasks , setCompleteTasks , getTask , getTaskCategory , getTasksByCategory , getTasksDueToday , getTasksDueThisWeek , getImportantTasks , createTask , editTask , deleteTask , deleteTasksByCategory , moveTaskToComplete}
 })();
 
 
