@@ -285,7 +285,7 @@ const UIController = (() => {
                 case "create": {
                     formHeader.addInnerText("Create New Task");
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "createTask", type:"submit"}).addInnerText("Create Task");
+                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "createTask", type:"submit"}).addInnerText("Save");
                     const cancelBtn = uiItems.modal.createButton.setElementAttribute({class: "closeModal cancelBtn", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
@@ -320,7 +320,7 @@ const UIController = (() => {
                     taskNotesTextArea.setElementAttribute({value: taskObject.notes});
                     taskImportantStatusInput.setElementAttribute({value: taskObject.importantStatus});
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "editTask", type:"submit", "data-task-id": currentTaskId}).addInnerText("Edit Task");
+                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "editTask", type:"submit", "data-task-id": currentTaskId}).addInnerText("Save");
                     const cancelBtn = uiItems.modal.createButton.setElementAttribute({class: "closeModal cancelBtn", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelBtn]);
                     modalForm.addChildElement([formHeader,taskNameWrapper,taskCategoryWrapper,taskDueDateWrapper,taskDescriptionWrapper,taskNotesWrapper,taskImportantStatusWrapper,formButtonWrapper,closeIcon]);
@@ -330,7 +330,7 @@ const UIController = (() => {
                 case "delete": {
                     formHeader.addInnerText("Warning: This will delete the task permanently.");
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "deleteTask", type:"button", "data-task-id": currentTaskId}).addInnerText("Delete Task");
+                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "deleteTask", type:"button", "data-task-id": currentTaskId}).addInnerText("Delete");
                     const cancelTaskCreationBtn = uiItems.modal.createButton.setElementAttribute({class: "closeModal cancelDelete", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,formButtonWrapper,closeIcon]);
@@ -412,7 +412,7 @@ const UIController = (() => {
                 case "create": {
                     formHeader.addInnerText("Create New Category");
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "createCategory", type:"submit"}).addInnerText("Create Category");
+                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "createCategory", type:"submit"}).addInnerText("Save");
                     const cancelBtn = uiItems.modal.createButton.setElementAttribute({class: "closeModal cancelBtn", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelBtn]);
                     modalForm.addChildElement([formHeader,categoryNameWrapper,categoryDescriptionWrapper,formButtonWrapper,closeIcon]);
@@ -424,7 +424,7 @@ const UIController = (() => {
                     categoryNameInput.setElementAttribute({value: categoryObject.name});
                     categoryDescriptionTextArea.setElementAttribute({value: categoryObject.description});
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "editCategory", type:"submit", "data-category-id": currentCategoryId}).addInnerText("Edit Category");
+                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "editCategory", type:"submit", "data-category-id": currentCategoryId}).addInnerText("Save");
                     const cancelBtn = uiItems.modal.createButton.setElementAttribute({class: "closeModal cancelBtn", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelBtn]);
                     modalForm.addChildElement([formHeader,categoryNameWrapper,categoryDescriptionWrapper,formButtonWrapper,closeIcon]);
@@ -434,7 +434,7 @@ const UIController = (() => {
                 case "delete": {
                     formHeader.addInnerText("Warning: This category and all it's tasks will be deleted.");
                     const formButtonWrapper = uiItems.modal.createDiv.setElementAttribute({class: "form-btn-wrapper"});
-                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "deleteCategory", type:"button", "data-category-id": currentCategoryId}).addInnerText("Delete Category");
+                    const formSubmitBtn = uiItems.modal.createButton.setElementAttribute({id: "deleteCategory", type:"button", "data-category-id": currentCategoryId}).addInnerText("Delete");
                     const cancelTaskCreationBtn = uiItems.modal.createButton.setElementAttribute({class: "closeModal cancelDelete", type:"button"}).addInnerText("Cancel");
                     formButtonWrapper.addChildElement([formSubmitBtn,cancelTaskCreationBtn]);
                     modalForm.addChildElement([formHeader,formButtonWrapper,closeIcon]);
@@ -500,9 +500,6 @@ const UIController = (() => {
                 dynamicallySelectButton();
 
             }
-            
-            
-
             document.querySelector('#numberOfCategories').textContent = `(${categoryManager.getCategories().length})`;
         }
 
@@ -593,20 +590,22 @@ const UIController = (() => {
         }
 
         const renderUserCategory = (categoryId) => {
-            
             document.querySelector('#categoryTitle').textContent = categoryManager.getCategory(categoryId).name;
             document.querySelector('#categorySummary').textContent = categoryManager.getCategory(categoryId).description;
             taskManager.getTasks().forEach((task) => {
                 if (task.category === categoryId) {
                     buildUITaskItem(task)
                 }
-                
-                
             })
             document.querySelector('#numberOfTasks').textContent = `(${taskManager.getTasksByCategory(categoryId).length})`
             if (taskManager.getTasks().length === 0) buildDummyTaskItem()
         }
 
+        const renderCategoryError = () => {
+            const categoryWrapper = document.querySelector('.category-wrapper')
+            categoryWrapper.classList.add('displayCategoryError')
+            setTimeout(() => categoryWrapper.classList.remove('displayCategoryError'),5000)
+        }
 
         const clearTaskItems = () => {
             const tasksWrapper = document.querySelector('.tasks-wrapper') 
@@ -617,7 +616,7 @@ const UIController = (() => {
             });
         }
         
-        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems , buildDummyTaskItem , buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons , renderWelcomeWindow , updateFormSelectedCategory , colorPastDueDates}
+        return { openTaskModal , openCategoryModal , getTaskValues , getCategoryValues , closeModal , clearTaskItems , buildDummyTaskItem , buildCategoryButton , buildUITaskItem , buildUICompleteTaskItem , displayDateError , dynamicallySelectButton , renderDefaultCategory , renderUserCategory , renderCategoryButtons , renderWelcomeWindow , updateFormSelectedCategory , colorPastDueDates , renderCategoryError}
     })();
  
 

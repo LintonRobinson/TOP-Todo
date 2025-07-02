@@ -61,16 +61,14 @@ const eventListenerController = (() => {
 
     const addDefaultEventListeners = () => {
         document.addEventListener("click", (event) => {
-            // Good
             if (event.target.matches('.userCategory')) {
                 pubsub.publish("clearTaskItems");
                 pubsub.publish('renderUserCategory', event.target.dataset.categoryId)
                 categoryManager.setActiveCategory(event.target.dataset.categoryId)   
             } 
-
-            // 
+            
             if (event.target.classList.contains("openCreateTask")) pubsub.publish("openTaskModule", {modalType:"create"});
-            //
+            
             if (event.target.id === "openCreateCategory") pubsub.publish("openCategoryModule", {modalType:"create"});
             
             if (event.target.classList.contains("openEditTaskModal")) pubsub.publish("openTaskModule", {modalType:"edit", currentTaskId: event.target.dataset.taskId});
@@ -80,7 +78,14 @@ const eventListenerController = (() => {
             
             if (event.target.classList.contains("viewTask")) pubsub.publish("openTaskModule", {modalType:"view", taskObject: taskManager.getTask(event.target.dataset.taskId), currentTaskId: event.target.dataset.taskId});
             if (event.target.classList.contains("openDeleteTaskModal")) pubsub.publish("openTaskModule", {modalType:"delete", currentTaskId: event.target.dataset.taskId})
-            if (event.target.classList.contains("openDeleteCategoryModal")) pubsub.publish("openCategoryModule", {modalType:"delete", currentCategoryId: event.target.dataset.categoryId})
+            if (event.target.classList.contains("openDeleteCategoryModal")) {
+                if (categoryManager.getCategories().length > 1) {
+                    pubsub.publish("openCategoryModule", {modalType:"delete", currentCategoryId: event.target.dataset.categoryId})
+                } else {
+                    pubsub.publish("renderCategoryError")
+                }
+                
+            } 
             
             if (event.target.id === "deleteTask") {
                 
@@ -97,19 +102,22 @@ const eventListenerController = (() => {
                 pubsub.publish('dynamicallySelectButton');
                 pubsub.publish('renderWelcomeWindow')
             }
+
             if (event.target.id === "completeTask") {
                 const taskName = document.querySelector('#taskName').value;
                 pubsub.publish("completeTask", {taskId: event.target.dataset.taskId, taskName: taskName});
                 pubsub.publish("clearTaskItems");
-                UIController.domManager.renderDefaultCategory('complete')  
+                pubsub.publish('renderUserCategory', categoryManager.getActiveCategory());
                 removeActiveClass();
-                document.querySelector('.completeTasks').classList.add('active')
+    
                 pubsub.publish("renderCategoryButtons")
                 pubsub.publish('addCategoryEventListeners'); 
+                pubsub.publish('dynamicallySelectButton');
                 pubsub.publish("closeModal");
+                pubsub.publish('renderWelcomeWindow')
             } 
 
-            if (event.target.id === "deleteCategory") {
+            if (event.target.id === "deleteCategory") { 
                 pubsub.publish("deleteCategory", event.target.dataset.categoryId);
                 pubsub.publish("clearTaskItems");
                 pubsub.publish('renderDefaultCategory', 'all');
@@ -117,6 +125,7 @@ const eventListenerController = (() => {
                 document.querySelector('.allTasks').classList.add('active')
                 pubsub.publish("renderCategoryButtons")
                 pubsub.publish('renderWelcomeWindow')
+                if (taskManager.getTasks().length === 0) UIController.domManager.buildDummyTaskItem()
             } 
             
             if (event.target.classList.contains("closeModal") && event.target.matches("i")) pubsub.publish("closeModal");

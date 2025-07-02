@@ -139,11 +139,13 @@ const taskManager = (() => {
 
 
     const moveTaskToComplete = ({taskId, taskName}) => {
-       
+        categoryManager.setActiveCategory(getTask(taskId).category)
         completeTasks.push(taskName);
+
         deleteTask(taskId);
         saveToLocalStorage();
-        categoryManager.setActiveCategory('complete')
+        console.log(getTask(taskId))
+        
     }
 
     const saveToLocalStorage = () => {

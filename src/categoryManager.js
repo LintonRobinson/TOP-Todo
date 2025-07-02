@@ -2,15 +2,7 @@ import taskManager from "./taskManager.js"
 const categoryManager = (() => {
     let activeCategory
     let categories
-
-    
-    // Update Storage
-    document.addEventListener("DOMContentLoaded", () => {
-        
-    })
-
-
-    
+  
     class Category {
         constructor({categoryName , categoryDescription, categoryId} ) {
             this.name = categoryName;

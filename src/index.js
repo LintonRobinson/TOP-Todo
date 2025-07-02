@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     pubSub.subscribe("addCategoryEventListeners", eventListenerController.addCategoryEventListeners);
     pubSub.subscribe("dynamicallySelectButton", UIController.domManager.dynamicallySelectButton);
     pubSub.subscribe("colorPastDueDates",  UIController.domManager.colorPastDueDates);
-
+    pubSub.subscribe("renderCategoryError", UIController.domManager.renderCategoryError)
     UIController.domManager.dynamicallySelectButton()
 
     if (!localStorage.getItem("tasks")) {
@@ -67,9 +67,3 @@ document.addEventListener("DOMContentLoaded", () => {
     if (taskManager.getTasks().length === 0) UIController.domManager.buildDummyTaskItem()
     
 });
-
-window.categoryManager = categoryManager;
-window.taskManager = taskManager;
-window.Element = Element;
-window.UIController = UIController;
-window.pubsub = pubSub;
